@@ -52,10 +52,15 @@
  }
 
  :root {
-     --color-primary: rgb(36, 89, 83);
-     --color-secondary: rgb(64, 142, 145);
-     --color-tertiary: rgb(228, 147, 147);
-     --color-neutral: rgb(216, 216, 216);
+     --color-light-blue: rgb(40, 143, 180);
+     --color-dark-blue: rgb(29, 85, 111);
+     --color-beige: rgb(239,
+             221,
+             178);
+     --color-red: rgb(250,
+             54,
+             10);
+
  }
 
 
@@ -63,8 +68,8 @@
      font-family: 'MiraiKato';
      font-size: x-large;
      padding: 0px;
-     padding-bottom: 10000px;
-     background-color: var(--color-neutral);
+     background-color: var(--color-dark-blue);
+     color: var(--color-beige);
  }
 
 
@@ -75,8 +80,8 @@
      left: 0;
      width: 100%;
      z-index: 200;
-     color: var(--color-primary);
-     background-color: var(--color-neutral);
+     color: var(--color-beige);
+     background-color: var(--color-dark-blue);
  }
 
  #navbar {
@@ -88,17 +93,17 @@
      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
      transition: top 0.35s ease-in-out;
      z-index: 100;
-     background-color: var(--color-neutral);
+     background-color: var(--color-dark-blue);
  }
 
  #navbar a {
      padding: 10px;
      text-decoration: none;
-     color: var(--color-primary);
+     color: var(--color-beige);
  }
 
  #navbar a:hover {
-     color: var(--color-tertiary);
+     color: var(--color-red);
  }
 
  #navbar.show {
@@ -125,7 +130,7 @@
      left: 0;
      width: 100%;
      height: 100%;
-     background-image: url('../Static/swan.jpg');
+     background-image: url('../Static/Gallery/longboard.png');
      background-size: cover;
      background-position: center;
      will-change: transform;
@@ -133,6 +138,29 @@
      z-index: -1;
      /* Move the background behind the text */
  }
+
+ #gallery,
+ #animation {
+     padding-bottom: 30px;
+ }
+
+ #animation {
+     padding-top: 30px;
+ }
+
+ #about {
+     background-color: var(--color-beige);
+     color: var(--color-dark-blue);
+     font-family: 'Arial';
+     padding: 30px;
+ }
+
+ #contact {
+     padding: 30px;
+     line-height: 1.5;
+ }
+
+
 
  .parallax-container .parallax-text {
      position: absolute;
@@ -142,7 +170,7 @@
      line-height: 2.5;
      font-size: 2.5rem;
      text-align: center;
-     color: var(--color-neutral);
+     color: var(--color-light-blue);
      text-shadow: 2px 2px 4px rgba(0, 0, 0, 1);
      transform: translate(-50%, -50%);
      /* Add additional styling for your text */
@@ -170,4 +198,19 @@
      width: 100%;
      height: 100%;
      object-fit: cover;
+ }
+
+ .video-carousel {
+     display: flex;
+     overflow-x: scroll;
+     scroll-snap-type: x mandatory;
+     scroll-behavior: smooth;
+ }
+
+ .video-frame {
+     width: 560px;
+     height: 315px;
+     scroll-snap-align: start;
+     margin-right: 10px;
+     overflow: none;
  }

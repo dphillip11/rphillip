@@ -37,12 +37,23 @@ window.addEventListener('mousemove', function(event) {
 
 let offsetFromTop = 150;
 window.addEventListener('DOMContentLoaded', function() {
-  var arrow = document.getElementById('arrow');
-  var first_paragraph = document.getElementById('first_paragraph');
+  var arrow = document.getElementById('gallery-link');
+  var gallery = document.getElementById('gallery');
 
   arrow.addEventListener('click', function(event) {
     event.preventDefault();
-    var topOffset = first_paragraph.offsetTop - offsetFromTop;
+    var topOffset = gallery.offsetTop - offsetFromTop;
+    window.scrollTo({ top: topOffset, behavior: 'smooth' });
+  });
+});
+
+window.addEventListener('DOMContentLoaded', function() {
+  var arrow = document.getElementById('animation-link');
+  var animation = document.getElementById('animation');
+
+  arrow.addEventListener('click', function(event) {
+    event.preventDefault();
+    var topOffset = animation.offsetTop - offsetFromTop;
     window.scrollTo({ top: topOffset, behavior: 'smooth' });
   });
 });
@@ -54,16 +65,15 @@ puzzleItems.forEach((item) => {
   item.addEventListener('mouseover', function() {
     puzzleItems.forEach((otherItem) => {
       if (otherItem !== item && !otherItem.classList.contains('enlarged')) {
-        otherItem.style.transform = 'scale(0.9)';
-      }
+        otherItem.style.transform = 'scale(0.95)';
+        }
+        item.style.transform = 'scale(1.2)';
     });
   });
 
   item.addEventListener('mouseout', function() {
     puzzleItems.forEach((otherItem) => {
-      if (otherItem !== item && !otherItem.classList.contains('enlarged')) {
         otherItem.style.transform = 'scale(1)';
-      }
     });
   });
 
