@@ -13,10 +13,10 @@
     </div>
 
     <nav id="navbar">
-        <a id="gallery-link" href="1">Gallery</a>
-        <a id="animation-link" href="2">Animation</a>
-        <a id="contact-link" href="4">About Me</a>
-        <a id="contact-link" href="4">Contact</a>
+        <a class="nav-link" id="gallery-link" href="gallery">Gallery</a>
+        <a class="nav-link" id="animation-link" href="animation">Animation</a>
+        <a class="nav-link" id="contact-link" href="about">About Me</a>
+        <a class="nav-link" id="contact-link" href="contact">Contact</a>
     </nav>
 
     <div class="parallax-container">
@@ -87,32 +87,34 @@
     <div id="animation">
         <h1>Animation</h1>
         <div class="video-carousel">
-            <div class="video-frame">
-                <iframe width="560" height="315" src="https://www.youtube.com/embed/_msV5WNpCBA"
-                    title="YouTube video player" frameborder="0"
+            <div class="video-frame active">
+                <iframe src="https://www.youtube.com/embed/_msV5WNpCBA" title="YouTube video player" frameborder="0"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                     allowfullscreen></iframe>
             </div>
             <div class="video-frame">
-                <iframe width="560" height="315" src="https://www.youtube.com/embed/frNrP5eVZbg"
-                    title="YouTube video player" frameborder="0"
+                <iframe src="https://www.youtube.com/embed/frNrP5eVZbg" title="YouTube video player" frameborder="0"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                     allowfullscreen></iframe>
             </div>
             <div class="video-frame">
-                <iframe width="560" height="315" src="https://www.youtube.com/embed/2hND6p_URAw"
-                    title="YouTube video player" frameborder="0"
+                <iframe src="https://www.youtube.com/embed/2hND6p_URAw" title="YouTube video player" frameborder="0"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                     allowfullscreen></iframe>
             </div>
             <div class="video-frame">
-                <iframe width="560" height="315" src="https://www.youtube.com/embed/TmcVo-qb8Fs"
-                    title="YouTube video player" frameborder="0"
+                <iframe src="https://www.youtube.com/embed/TmcVo-qb8Fs" title="YouTube video player" frameborder="0"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                     allowfullscreen></iframe>
+            </div>
+            <div class="video-controls">
+                <button class="prev-button">&lt;</button>
+                <button class="next-button">&gt;</button>
             </div>
         </div>
     </div>
+
+
 
     <div id="about">
         <h1>About Me</h1>
