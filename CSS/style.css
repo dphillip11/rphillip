@@ -1,0 +1,173 @@
+ @font-face {
+     font-family: NaturalHandwritten;
+     src: url('Fonts/NaturalHandwritten.ttf');
+
+ }
+
+ @font-face {
+     font-family: 'Miraikato';
+     src: url('Fonts/MiraikatoBold.otf') format('opentype');
+     font-weight: bold;
+     font-style: normal;
+ }
+
+ @font-face {
+     font-family: 'Miraikato';
+     src: url('Fonts/MiraikatoBoldItalic.otf') format('opentype');
+     font-weight: bold;
+     font-style: italic;
+ }
+
+ @font-face {
+     font-family: 'Miraikato';
+     src: url('Fonts/MiraikatoRegular.otf') format('opentype');
+     font-weight: regular;
+     font-style: normal;
+ }
+
+ @font-face {
+     font-family: 'Miraikato';
+     src: url('Fonts/MiraikatoItalic.otf') format('opentype');
+     font-weight: regular;
+     font-style: italic;
+ }
+
+ @font-face {
+     font-family: 'Miraikato';
+     src: url('Fonts/MiraikatoThin.otf') format('opentype');
+     font-weight: thin;
+     font-style: normal;
+ }
+
+ @font-face {
+     font-family: 'Miraikato';
+     src: url('Fonts/MiraikatoThinItalic.otf') format('opentype');
+     font-weight: thin;
+     font-style: italic;
+ }
+
+ .spacer {
+     height: 180px;
+     width: 100%;
+ }
+
+ :root {
+     --color-primary: rgb(36, 89, 83);
+     --color-secondary: rgb(64, 142, 145);
+     --color-tertiary: rgb(228, 147, 147);
+     --color-neutral: rgb(216, 216, 216);
+ }
+
+
+ body {
+     font-family: 'MiraiKato';
+     font-size: x-large;
+     padding: 0px;
+     padding-bottom: 10000px;
+     background-color: var(--color-neutral);
+ }
+
+
+ .header {
+     position: fixed;
+     top: 0;
+     height: 80px;
+     left: 0;
+     width: 100%;
+     z-index: 200;
+     color: var(--color-primary);
+     background-color: var(--color-neutral);
+ }
+
+ #navbar {
+     position: fixed;
+     padding-top: 10px;
+     top: -100px;
+     height: 50px;
+     width: 100%;
+     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+     transition: top 0.35s ease-in-out;
+     z-index: 100;
+     background-color: var(--color-neutral);
+ }
+
+ #navbar a {
+     padding: 10px;
+     text-decoration: none;
+     color: var(--color-primary);
+ }
+
+ #navbar a:hover {
+     color: var(--color-tertiary);
+ }
+
+ #navbar.show {
+     top: 80px;
+ }
+
+ .parallax-container {
+     position: relative;
+     top: 80px;
+     height: 100vh;
+     /* Adjust the height as needed */
+     overflow: hidden;
+ }
+
+ p {
+     text-align: center;
+     padding-top: 20px;
+     padding-bottom: 20px;
+ }
+
+ .parallax-container .parallax-bg {
+     position: absolute;
+     top: 0;
+     left: 0;
+     width: 100%;
+     height: 100%;
+     background-image: url('../Static/swan.jpg');
+     background-size: cover;
+     background-position: center;
+     will-change: transform;
+     transform: translate3d(0, 0, 0);
+     z-index: -1;
+     /* Move the background behind the text */
+ }
+
+ .parallax-container .parallax-text {
+     position: absolute;
+     top: 40%;
+     left: 50%;
+     font-weight: bold;
+     line-height: 2.5;
+     font-size: 2.5rem;
+     text-align: center;
+     color: var(--color-neutral);
+     text-shadow: 2px 2px 4px rgba(0, 0, 0, 1);
+     transform: translate(-50%, -50%);
+     /* Add additional styling for your text */
+ }
+
+ .puzzle-container {
+     display: grid;
+     grid-template-columns: repeat(3, minmax(200px, 1fr));
+     /* Update to three columns */
+     grid-auto-rows: minmax(200px, auto);
+     grid-gap: 10px;
+ }
+
+ .puzzle-item {
+     overflow: hidden;
+     transition: all 0.3s ease-in-out;
+ }
+
+ .puzzle-item:hover {
+     z-index: 1;
+     transform: scale(1.1);
+ }
+
+ .puzzle-item img {
+     width: 100%;
+     height: 100%;
+     object-fit: cover;
+ }
