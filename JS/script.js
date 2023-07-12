@@ -54,90 +54,170 @@ window.addEventListener('DOMContentLoaded', function() {
   });
 });
 
+const boxes = document.querySelectorAll('.puzzle-item');
+let enlargedItem = 0;
+let showLightbox = false;
+let isDragging = false;
+let startX;
+let startY;
+let translateX = 0;
+let translateY = 0;
 
-const puzzleItems = document.querySelectorAll('.puzzle-item');
-let enlargedItem = null;
-let justEnlarged = false;
+const lightboxOverlay = document.getElementById('lightbox-overlay');
+const lightboxImage = document.getElementById('lightbox-image');
+const lightboxContent = document.getElementById('lightbox-content');
+const lightboxThumbnails = document.getElementById('lightbox-thumbnails');
+const lightboxClose = document.getElementById('lightbox-close');
+const lightboxPrev = document.getElementById('lightbox-prev');
+const lightboxNext = document.getElementById('lightbox-next');
+let currentZoomLevel = 1;
 
-window.addEventListener('click', function () {
-    if (enlargedItem != null && !justEnlarged) {
-        enlargedItem.style.transform = 'scale(1)';
-        enlargedItem.style.position = 'static';
-        enlargedItem.classList.remove('enlarged');
-        enlargedItem.style.zIndex = '0';
-        enlargedItem = null;
-    }
-    justEnlarged = false;
+// Display the lightbox gallery when an image is clicked
+boxes.forEach(function (box, index) {
+  box.addEventListener('click', function () {
+    enlargedItem = index;
+    updateLightbox();
+    lightboxOverlay.style.display = 'block';
+    showLightbox = true;
+    document.body.classList.add('no-scroll');
+  });
+  box.addEventListener("mouseover", function () {
+        box.classList.add("hovered");
+    });
+    box.addEventListener("mouseout", function () {
+        box.classList.remove("hovered");
+    });
 });
 
-puzzleItems.forEach((item) => {
-  item.addEventListener('mouseover', function() {
-    if (enlargedItem == null && !item.classList.contains('enlarged')) {
-      puzzleItems.forEach((otherItem) => {
-        if (otherItem !== item) {
-            otherItem.style.transform = 'scale(0.95)';
-            item.style.zIndex = '0';
-        }
-      });
-        item.style.transform = 'scale(1.2)';
-        item.style.zIndex = '100';
-    }
-  });
-
-  item.addEventListener('mouseout', function() {
-      if (enlargedItem == null && !item.classList.contains('enlarged')) {
-      puzzleItems.forEach((otherItem) => {
-          otherItem.style.transform = 'scale(1)';
-           item.style.zIndex = '0';
-      });
-    }
-  });
-
-  item.addEventListener('click', function() {
-    if (enlargedItem == null) {
-      item.style.transform = 'scale(0.8)';
-      item.style.position = 'fixed';
-      enlargedItem = item;
-      item.classList.add('enlarged');
-      resizeImage(item);
-        centerItem(item);
-        item.style.zIndex = '100';
-        justEnlarged = true;
-    }
-  });
+// Hide the lightbox gallery when close button is clicked
+lightboxClose.addEventListener('click', function () {
+  lightboxOverlay.style.display = 'none';
+  showLightbox = false;
+  document.body.classList.remove('no-scroll');
+  resetZoomAndTranslate();
 });
 
-function resizeImage(item) {
-  if (item.classList.contains('enlarged')) {
-    var windowHeight = window.innerHeight;
-    var imageHeight = item.offsetHeight;
-    var scaleFactor = 0.8 * windowHeight / imageHeight;
+// Update the lightbox gallery with the selected image and thumbnails
+function updateLightbox() {
+  const imageSrc = boxes[enlargedItem].querySelector('img').src;
+  lightboxImage.src = imageSrc;
+  resetZoomAndTranslate();
 
-    item.style.transition = 'transform 0.3s ease-in-out'; // Add transition property
-    item.style.transform = 'scale(' + scaleFactor + ')';
+  // Remove previous thumbnails
+  lightboxThumbnails.innerHTML = '';
+
+  // Create and append thumbnails
+  boxes.forEach(function (box, index) {
+    const thumbnailSrc = box.querySelector('img').src;
+    const thumbnail = document.createElement('img');
+    thumbnail.classList.add('lightbox-thumbnail');
+    thumbnail.src = thumbnailSrc;
+    thumbnail.addEventListener('click', function () {
+      enlargedItem = index;
+      updateLightbox();
+    });
+    lightboxThumbnails.appendChild(thumbnail);
+  });
+
+  // Add event listeners to previous and next buttons
+  lightboxPrev.addEventListener('click', showPrevImage);
+  lightboxNext.addEventListener('click', showNextImage);
+}
+
+// Function to show the previous image
+function showPrevImage() {
+  if (enlargedItem === 0) {
+    enlargedItem = boxes.length - 1;
   } else {
-    item.style.transition = 'transform 0.3s ease-in-out'; // Add transition property
-    item.style.transform = 'scale(1)';
+    enlargedItem--;
+  }
+  updateLightbox();
+}
+
+// Function to show the next image
+function showNextImage() {
+  if (enlargedItem === boxes.length - 1) {
+    enlargedItem = 0;
+  } else {
+    enlargedItem++;
+  }
+  updateLightbox();
+}
+
+// Reset the zoom level and translation of the image
+function resetZoomAndTranslate() {
+  currentZoomLevel = 1;
+  translateX = 0;
+  translateY = 0;
+  applyTransform();
+}
+
+// Update the zoom level and translation of the image based on the scroll event
+function updateZoom(event) {
+  const scrollDelta = Math.sign(event.deltaY);
+  const zoomStep = 0.1;
+  const minZoomLevel = 0.5;
+  const maxZoomLevel = 2;
+
+  if (scrollDelta > 0 && currentZoomLevel > minZoomLevel) {
+    currentZoomLevel -= zoomStep;
+  } else if (scrollDelta < 0 && currentZoomLevel < maxZoomLevel) {
+    currentZoomLevel += zoomStep;
+  }
+
+  applyTransform();
+}
+
+// Update the position and scale of the image using CSS transform
+function applyTransform() {
+  lightboxImage.style.transform = `translate(${translateX}px, ${translateY}px) scale(${currentZoomLevel})`;
+}
+
+// Handle mouse drag to pan and translate the image within the container
+function handleMouseDown(event) {
+  event.preventDefault();
+  isDragging = true;
+  startX = event.clientX || event.touches[0].clientX;
+  startY = event.clientY || event.touches[0].clientY;
+}
+
+function handleMouseMove(event) {
+  if (!isDragging) return;
+
+  const currentX = event.clientX || event.touches[0].clientX;
+  const currentY = event.clientY || event.touches[0].clientY;
+  const diffX = currentX - startX;
+  const diffY = currentY - startY;
+
+  translateX += diffX;
+  translateY += diffY;
+  startX = currentX;
+  startY = currentY;
+  applyTransform();
+}
+
+function handleMouseUp() {
+  isDragging = false;
+}
+
+// Prevent default scrolling and handle zooming when the lightbox is active
+function handleLightboxScroll(event) {
+  if (showLightbox) {
+    event.preventDefault();
+    updateZoom(event);
   }
 }
 
-function centerItem(item) {
-  const windowWidth = window.innerWidth;
-  const windowHeight = window.innerHeight;
-  const itemWidth = item.offsetWidth;
-  const itemHeight = item.offsetHeight;
-  const itemLeft = (windowWidth - itemWidth) / 2;
-  const itemTop = (windowHeight - itemHeight) / 2;
-
-  item.style.transition = 'left 0.3s ease-in-out, top 0.3s ease-in-out'; // Add transition properties
-  item.style.left = itemLeft + 'px';
-  item.style.top = itemTop + 20 + 'px';
-
-  // Remove transition properties after the transition completes
-  setTimeout(function() {
-    item.style.transition = ''; // Reset transition property
-  }, 300); // Match the transition duration in milliseconds
-}
+// Add event listeners for mousewheel, touch, and mouse drag events
+window.addEventListener('mousewheel', handleLightboxScroll, { passive: false });
+window.addEventListener('touchmove', handleLightboxScroll, { passive: false });
+lightboxContent.addEventListener('mousedown', handleMouseDown);
+lightboxContent.addEventListener('mousemove', handleMouseMove);
+lightboxContent.addEventListener('mouseup', handleMouseUp);
+lightboxContent.addEventListener('mouseleave', handleMouseUp);
+lightboxContent.addEventListener('touchstart', handleMouseDown);
+lightboxContent.addEventListener('touchmove', handleMouseMove);
+lightboxContent.addEventListener('touchend', handleMouseUp);
 
 
 const videoFrames = document.querySelectorAll('.video-frame');

@@ -74,6 +74,9 @@
      color: var(--color-beige);
  }
 
+ h1 {
+     font-family: 'MiraiKato';
+ }
 
  .header {
      font-family: 'MiraiKato';
@@ -174,33 +177,126 @@
      color: var(--color-light-blue);
      text-shadow: 2px 2px 4px rgba(0, 0, 0, 1);
      transform: translate(-50%, -50%);
-     /* Add additional styling for your text */
  }
 
  .puzzle-container {
      display: grid;
      grid-template-columns: repeat(3, minmax(200px, 1fr));
-     /* Update to three columns */
      grid-auto-rows: minmax(200px, auto);
      grid-gap: 10px;
+     position: relative;
  }
 
  .puzzle-item {
      overflow: hidden;
      transition: all 0.3s ease-in-out;
+     position: relative;
+     transition: transform 0.3s, left 0.3s, top 0.3s;
+     z-index: 0;
+
  }
 
- .puzzle-item:hover {
-     z-index: 1;
+ .puzzle-item.hovered {
+     transition: all 0.3s ease-in-out;
      transform: scale(1.1);
+     z-index: 1;
  }
 
  .puzzle-item img {
+     transition: all 0.5s ease-in-out;
      width: 100%;
      height: 100%;
      object-fit: cover;
  }
 
+ .puzzle-item.hovered img {
+     transition: all 0.5s ease-in-out;
+     transform: scale(1.2);
+ }
+
+ #lightbox-overlay {
+     position: fixed;
+     top: 0;
+     padding-top: 5vh;
+     left: 0;
+     width: 100%;
+     height: 100%;
+     background-color: rgba(0, 0, 0, 0.9);
+     display: flex;
+     justify-content: center;
+     align-items: center;
+     z-index: 1000;
+ }
+
+ #lightbox-container {
+     position: relative;
+     max-width: 80vw;
+     max-height: 80vh;
+     margin: auto;
+ }
+
+ #lightbox-content {
+     position: relative;
+     width: auto;
+     height: 80vh;
+ }
+
+ #lightbox-image-container {
+     display: block;
+     height: 80vh;
+     margin: 0 auto;
+     overflow: hidden;
+ }
+
+ #lightbox-image {
+     height: 100%;
+     width: auto;
+ }
+
+ #lightbox-thumbnails {
+     display: flex;
+     justify-content: center;
+     align-items: center;
+     gap: 10px;
+     margin-top: 10px;
+ }
+
+ .lightbox-thumbnail {
+     height: 10vh;
+     width: height;
+     cursor: pointer;
+ }
+
+ #lightbox-close,
+ #lightbox-prev,
+ #lightbox-next {
+     position: absolute;
+     top: 50%;
+     transform: translateY(-50%);
+     font-size: 60px;
+     color: #fff;
+     cursor: pointer;
+     background-color: rgba(0, 0, 0, 0.5);
+     padding: 10px;
+     border-radius: 10%;
+ }
+
+ #lightbox-close {
+     top: 0;
+     right: 0;
+ }
+
+ #lightbox-prev {
+     left: 10px;
+ }
+
+ #lightbox-next {
+     right: 10px;
+ }
+
+ .no-scroll {
+     overflow: hidden;
+ }
 
  .video-carousel {
      position: relative;
