@@ -34,6 +34,18 @@ window.addEventListener('mousemove', function(event) {
   }
 });
 
+// window.addEventListener('touchmove', function(event) {
+//   var mouseY = event.clientY;
+
+//   if (mouseY <= 160 && !isNavbarVisible) {
+//     navbar.classList.add('show');
+//     isNavbarVisible = true;
+//   } else if (mouseY > 160 && isNavbarVisible && window.pageYOffset >= 100) {
+//     navbar.classList.remove('show');
+//     isNavbarVisible = false;
+//   }
+// });
+
 let offsetFromTop = 150;
 
 function scrollToSection(sectionId) {

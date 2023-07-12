@@ -227,8 +227,6 @@
 
  #lightbox-container {
      position: relative;
-     max-width: 80vw;
-     max-height: 80vh;
      margin: auto;
  }
 
@@ -243,6 +241,12 @@
      height: 80vh;
      margin: 0 auto;
      overflow: hidden;
+ }
+
+ @media screen and (max-width: 768px) {
+     #lightbox-image-container {
+         height: 90vh;
+     }
  }
 
  #lightbox-image {
