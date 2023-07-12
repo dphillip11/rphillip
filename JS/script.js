@@ -62,6 +62,7 @@ let startX;
 let startY;
 let translateX = 0;
 let translateY = 0;
+let thumbnailOffset = 0;
 
 const lightboxOverlay = document.getElementById('lightbox-overlay');
 const lightboxImage = document.getElementById('lightbox-image');
@@ -105,8 +106,8 @@ function updateLightbox() {
 
   // Remove previous thumbnails
   lightboxThumbnails.innerHTML = '';
+  var thumbnailOffset = 0;
 
-  // Create and append thumbnails
   boxes.forEach(function (box, index) {
     const thumbnailSrc = box.querySelector('img').src;
     const thumbnail = document.createElement('img');
@@ -119,9 +120,18 @@ function updateLightbox() {
     lightboxThumbnails.appendChild(thumbnail);
   });
 
+  offsetThubmbnails();
+
   // Add event listeners to previous and next buttons
   lightboxPrev.addEventListener('click', showPrevImage);
   lightboxNext.addEventListener('click', showNextImage);
+}
+
+function offsetThubmbnails() {
+  var thumbnails = document.querySelectorAll('.lightbox-thumbnail');
+  offset = thumbnails[enlargedItem].offsetLeft - thumbnails[0].offsetLeft;
+  thumbnails[enlargedItem].style.border = '2px solid var(--color-red)';
+  lightboxThumbnails.style.transform = `translateX(${-offset}px)`;
 }
 
 // Function to show the previous image
@@ -157,14 +167,13 @@ function updateZoom(event) {
   const scrollDelta = Math.sign(event.deltaY);
   const zoomStep = 0.1;
   const minZoomLevel = 0.5;
-  const maxZoomLevel = 2;
+  const maxZoomLevel = 4;
 
   if (scrollDelta > 0 && currentZoomLevel > minZoomLevel) {
     currentZoomLevel -= zoomStep;
   } else if (scrollDelta < 0 && currentZoomLevel < maxZoomLevel) {
     currentZoomLevel += zoomStep;
   }
-
   applyTransform();
 }
 
