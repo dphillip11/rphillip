@@ -1,4 +1,4 @@
-let scrollSpeed = -0.5;
+let scrollSpeed = -1;
 
 window.addEventListener('scroll', function () {
   var parallaxBg = document.querySelector('.parallax-bg');

@@ -54,12 +54,9 @@
  :root {
      --color-light-blue: rgb(40, 143, 180);
      --color-dark-blue: rgb(29, 85, 111);
-     --color-beige: rgb(239,
-             221,
-             178);
-     --color-red: rgb(250,
-             54,
-             10);
+     --color-beige: rgb(239, 221, 178);
+     --color-red: rgb(250, 54, 10);
+     --overlay-dark-blue: rgba(29, 85, 111, 0.9);
 
  }
 
@@ -221,7 +218,7 @@
      left: 0;
      width: 100%;
      height: 100%;
-     background-color: rgba(0, 0, 0, 0.9);
+     background-color: var(--overlay-dark-blue);
      display: flex;
      justify-content: center;
      align-items: center;
