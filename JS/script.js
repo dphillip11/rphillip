@@ -84,8 +84,14 @@ boxes.forEach(function (box, index) {
   });
   box.addEventListener("mouseover", function () {
         box.classList.add("hovered");
+  });
+  box.addEventListener("touchstart", function () {
+        box.classList.add("hovered");
     });
     box.addEventListener("mouseout", function () {
+        box.classList.remove("hovered");
+    });
+  box.addEventListener("touchend", function () {
         box.classList.remove("hovered");
     });
 });
@@ -114,6 +120,10 @@ function updateLightbox() {
     thumbnail.classList.add('lightbox-thumbnail');
     thumbnail.src = thumbnailSrc;
     thumbnail.addEventListener('click', function () {
+      enlargedItem = index;
+      updateLightbox();
+    });
+    thumbnail.addEventListener('touchstart', function () {
       enlargedItem = index;
       updateLightbox();
     });
