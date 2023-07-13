@@ -287,7 +287,7 @@
  .video-carousel {
      position: relative;
      height: 80vh;
-     width: 80vw;
+     width: 100vw;
      margin: 0 auto;
      overflow: hidden;
  }
@@ -318,6 +318,7 @@
      display: flex;
      justify-content: space-between;
      align-items: center;
+     padding: 5px;
  }
 
  .prev-button,
