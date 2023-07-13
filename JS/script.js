@@ -213,9 +213,6 @@ function handleMouseDown(event) {
 }
 
 function handleMouseMove(event) {
-  if (event.touches.length > 1) {
-    event.preventDefault();
-  }
   if (!isDragging) return;
 
   const currentX = event.clientX || event.touches[0].clientX;
@@ -244,21 +241,26 @@ function handleLightboxScroll(event) {
 
 // Add event listeners for mousewheel, touch, and mouse drag events
 window.addEventListener('wheel', handleLightboxScroll, { passive: false });
+window.addEventListener('touchstart', handleTouchStart, { passive: false });
+window.addEventListener('touchmove', handleTouchMove, { passive: false });
+window.addEventListener('touchend', handleTouchEnd, { passive: false });
 
 lightboxContent.addEventListener('mousedown', handleMouseDown);
 lightboxContent.addEventListener('mousemove', handleMouseMove);
 lightboxContent.addEventListener('mouseup', handleMouseUp);
 lightboxContent.addEventListener('mouseleave', handleMouseUp);
 
-lightboxContent.addEventListener('touchstart', handleMouseDown);
-lightboxContent.addEventListener('touchmove', handleMouseMove);
-lightboxContent.addEventListener('touchend', handleMouseUp);
+lightboxContent.addEventListener('touchstart', handleTouchStart, { passive: false });
+lightboxContent.addEventListener('touchmove', handleTouchMove, { passive: false });
+lightboxContent.addEventListener('touchend', handleTouchEnd, { passive: false });
 
 // Pinch Zoom variables
 let initialDistance = null;
 let initialZoomLevel = 1;
 
 function handleTouchStart(event) {
+  if (event.touches.length > 1)
+    event.preventDefault();
   if (event.touches.length === 2) {
     // Pinch Zooming
     const touch1 = event.touches[0];
