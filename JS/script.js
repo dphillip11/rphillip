@@ -239,10 +239,9 @@ function handleMouseUp() {
   isDragging = false;
 }
 
-
-
 // Add event listeners for mousewheel, touch, and mouse drag events
 window.addEventListener('wheel', handleLightboxScroll, { passive: false });
+window.addEventListener('touchmove', handleLightboxScroll, { passive: false });
 lightboxContent.addEventListener('mousedown', handleMouseDown);
 lightboxContent.addEventListener('mousemove', handleMouseMove);
 lightboxContent.addEventListener('mouseup', handleMouseUp);
