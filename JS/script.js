@@ -240,10 +240,10 @@ function handleLightboxScroll(event) {
 }
 
 // Add event listeners for mousewheel, touch, and mouse drag events
-window.addEventListener('wheel', handleLightboxScroll, { passive: false });
-window.addEventListener('touchstart', handleTouchStart, { passive: false });
-window.addEventListener('touchmove', handleTouchMove, { passive: false });
-window.addEventListener('touchend', handleTouchEnd, { passive: false });
+// window.addEventListener('wheel', handleLightboxScroll, { passive: false });
+window.addEventListener('touchstart', handleTouchStart);
+// window.addEventListener('touchmove', handleTouchMove, { passive: false });
+// window.addEventListener('touchend', handleTouchEnd, { passive: false });
 
 lightboxContent.addEventListener('mousedown', handleMouseDown);
 lightboxContent.addEventListener('mousemove', handleMouseMove);
@@ -260,7 +260,7 @@ let initialZoomLevel = 1;
 
 function handleTouchStart(event) {
   if (event.touches.length > 1)
-    event.preventDefault();
+     event.preventDefault();
   if (event.touches.length === 2) {
     // Pinch Zooming
     const touch1 = event.touches[0];

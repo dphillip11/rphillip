@@ -70,7 +70,7 @@
      background-color: var(--color-dark-blue);
      color: var(--color-beige);
      margin: 0;
-     touch-action: none;
+     touch-action: scroll;
  }
 
  h1 {
