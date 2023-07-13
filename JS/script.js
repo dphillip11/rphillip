@@ -166,45 +166,18 @@ function resetZoomAndTranslate() {
 }
 
 // Update the zoom level and translation of the image based on the scroll event
-function handleLightboxScroll(event) {
-  event.preventDefault();
-  
-  if (event.ctrlKey || event.metaKey) {
-    // Pinch zooming
-    const touchCount = event.touches.length;
-    if (touchCount === 2) {
-      const touch1 = event.touches[0];
-      const touch2 = event.touches[1];
-      const pinchDelta = Math.hypot(touch2.clientX - touch1.clientX, touch2.clientY - touch1.clientY);
+function updateZoom(event) {
+  const scrollDelta = Math.sign(event.deltaY);
+  const zoomStep = 0.1;
+  const minZoomLevel = 0.5;
+  const maxZoomLevel = 4;
 
-      const zoomStep = 0.01;
-      const minZoomLevel = 0.5;
-      const maxZoomLevel = 4;
-
-      if (pinchDelta < currentPinchDelta && currentZoomLevel > minZoomLevel) {
-        currentZoomLevel -= zoomStep;
-      } else if (pinchDelta > currentPinchDelta && currentZoomLevel < maxZoomLevel) {
-        currentZoomLevel += zoomStep;
-      }
-      currentPinchDelta = pinchDelta;
-
-      applyTransform();
-    }
-  } else {
-    // Scroll wheel scrolling
-    const scrollDelta = Math.sign(event.deltaY);
-    const zoomStep = 0.1;
-    const minZoomLevel = 0.5;
-    const maxZoomLevel = 4;
-
-    if (scrollDelta > 0 && currentZoomLevel > minZoomLevel) {
-      currentZoomLevel -= zoomStep;
-    } else if (scrollDelta < 0 && currentZoomLevel < maxZoomLevel) {
-      currentZoomLevel += zoomStep;
-    }
-
-    applyTransform();
+  if (scrollDelta > 0 && currentZoomLevel > minZoomLevel) {
+    currentZoomLevel -= zoomStep;
+  } else if (scrollDelta < 0 && currentZoomLevel < maxZoomLevel) {
+    currentZoomLevel += zoomStep;
   }
+  applyTransform();
 }
 
 // Update the position and scale of the image using CSS transform
@@ -239,6 +212,14 @@ function handleMouseUp() {
   isDragging = false;
 }
 
+// Prevent default scrolling and handle zooming when the lightbox is active
+function handleLightboxScroll(event) {
+  if (showLightbox) {
+    event.preventDefault();
+    updateZoom(event);
+  }
+}
+
 // Add event listeners for mousewheel, touch, and mouse drag events
 window.addEventListener('wheel', handleLightboxScroll, { passive: false });
 window.addEventListener('touchmove', handleLightboxScroll, { passive: false });
@@ -248,7 +229,7 @@ lightboxContent.addEventListener('mouseup', handleMouseUp);
 lightboxContent.addEventListener('mouseleave', handleMouseUp);
 lightboxContent.addEventListener('touchstart', handleMouseDown);
 lightboxContent.addEventListener('touchmove', handleMouseMove);
-lightboxContent.addEventListener('touchmove', handleLightboxScroll, { passive: false });
+lightboxContent.addEventListener('wheel', handleLightboxScroll, { passive: false });
 lightboxContent.addEventListener('touchend', handleMouseUp);
 
 
