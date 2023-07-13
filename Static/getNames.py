@@ -1,7 +1,7 @@
 import os
 
 folder_path = 'Static/Gallery'  # Replace with the actual folder path
-output_file = 'file_names.txt'  # Replace with the desired output file name
+output_file = 'Static/file_names.txt'  # Replace with the desired output file name
 
 # Get a list of file names in the folder
 file_names = os.listdir(folder_path)
