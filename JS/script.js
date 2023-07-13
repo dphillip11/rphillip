@@ -221,7 +221,7 @@ function handleLightboxScroll(event) {
 }
 
 // Add event listeners for mousewheel, touch, and mouse drag events
-window.addEventListener('mousewheel', handleLightboxScroll, { passive: false });
+window.addEventListener('wheel', handleLightboxScroll, { passive: false });
 window.addEventListener('touchmove', handleLightboxScroll, { passive: false });
 lightboxContent.addEventListener('mousedown', handleMouseDown);
 lightboxContent.addEventListener('mousemove', handleMouseMove);
