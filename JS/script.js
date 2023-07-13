@@ -100,8 +100,10 @@ lightboxClose.addEventListener('click', function () {
 // Update the lightbox gallery with the selected image and thumbnails
 function updateLightbox() {
   var lightboxOverlay = document.getElementById('lightbox-overlay');
- lightboxOverlay.width = window.visualViewport.width;
-  lightboxOverlay.height = window.visualViewport.height;
+ var viewportWidth = window.innerWidth / window.devicePixelRatio;
+  var viewportHeight = window.innerHeight / window.devicePixelRatio;
+  lightboxOverlay.width = viewportWidth;
+  lightboxOverlay.height = viewportHeight;
   const imageSrc = boxes[enlargedItem].querySelector('img').src;
   lightboxImage.src = imageSrc;
   resetZoomAndTranslate();
