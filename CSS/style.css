@@ -202,7 +202,7 @@
      padding-top: 2vh;
      left: 0;
      width: 100vw;
-     height: 100vw;
+     height: 100vh;
      background-color: var(--overlay-dark-blue);
      display: flex;
      justify-content: center;
