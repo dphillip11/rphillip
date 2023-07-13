@@ -69,6 +69,7 @@
      padding: 0px;
      background-color: var(--color-dark-blue);
      color: var(--color-beige);
+     margin: 0;
  }
 
  h1 {
@@ -114,33 +115,25 @@
      top: 80px;
  }
 
- .parallax-container {
-     position: relative;
-     top: 80px;
-     height: 100vh;
-     /* Adjust the height as needed */
-     overflow: hidden;
+ #banner-image {
+     display: flex;
+     justify-content: center;
+     align-items: center;
+     height: 80vh;
+     padding-bottom: 10vh;
+ }
+
+ #banner-image img {
+     max-width: 100%;
+     height: 100%;
+     object-fit: cover;
  }
 
  p {
      text-align: center;
      padding-top: 20px;
      padding-bottom: 20px;
- }
-
- .parallax-container .parallax-bg {
-     position: absolute;
-     top: 0;
-     left: 0;
-     width: 100%;
-     height: 100%;
-     background-image: url('../Static/Gallery/longboard.png');
-     background-size: cover;
-     background-position: center;
-     will-change: transform;
-     transform: translate3d(0, 0, 0);
-     z-index: -1;
-     /* Move the background behind the text */
+     max-width: 100vw;
  }
 
  #gallery,
@@ -161,27 +154,13 @@
      line-height: 1.5;
  }
 
-
-
- .parallax-container .parallax-text {
-     position: absolute;
-     top: 40%;
-     left: 50%;
-     font-weight: bold;
-     line-height: 2.5;
-     font-size: 2.5rem;
-     text-align: center;
-     color: var(--color-light-blue);
-     text-shadow: 2px 2px 4px rgba(0, 0, 0, 1);
-     transform: translate(-50%, -50%);
- }
-
  .puzzle-container {
      display: grid;
      grid-template-columns: repeat(3, minmax(200px, 1fr));
      grid-auto-rows: minmax(200px, auto);
      grid-gap: 10px;
      position: relative;
+     margin: 10px;
  }
 
  .puzzle-item {
