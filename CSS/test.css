@@ -30,3 +30,42 @@
      transform: scale(1.3);
      transition: all 1.5s ease-in-out;
  }
+
+ #animation-player {
+     align-items: center;
+     width: 100vw;
+ }
+
+ #animation-iframe {
+     height: 90vw;
+     width: 90vw;
+ }
+
+ #thumbnails {
+     display: flex;
+     flex-direction: row;
+ }
+
+ .thumbnail-holder {
+     width: 20vw;
+     height: 20vh;
+     overflow: hidden;
+     transition: all 0.5s ease-in-out;
+ }
+
+ .thumbnail-holder:hover {
+     transform: scale(1.1);
+     transition: all 0.5s ease-in-out;
+ }
+
+ .thumbnail-holder img {
+     width: 100%;
+     height: 100%;
+     object-fit: cover;
+     transition: all 1.5s ease-in-out;
+ }
+
+ .thumbnail-holder:hover img {
+     transform: scale(1.3);
+     transition: all 1.5s ease-in-out;
+ }

@@ -1,3 +1,8 @@
+let DEBUG = true;
+function LOG(message) {
+    if (DEBUG) console.log(message);
+}
+
 let light_blue = (40, 143, 180);
 let dark_blue = (29, 85, 111);
 let beige = (239, 221, 178);
@@ -21,6 +26,11 @@ function fetchNames(outputList, filePath, callback) {
 
 function FetchImagesCallback() { fetchNames(videoNames, 'Static/youtube_links.txt', FetchVideosCallback)}
 function FetchVideosCallback() { onLoad(); }
+//begin will start the callback chain
+function begin() {
+    fetchNames(imageNames, 'Static/file_names.txt', FetchImagesCallback);
+    LOG("begin called");
+}
 
 const imageNames = []; // Output list to store the fetched image names
 const videoNames = []; // Output list to store the fetched video names
@@ -43,37 +53,68 @@ function createGalleryItem(target, path, index) {
     image.src = "Static/Gallery/" + path;
     image.classList.add("gallery-image");
     gallery_item.appendChild(image);
+    target.appendChild(gallery_item);
+    LOG("created gallery item");
 }
-//append the thumbnail to the target gallery
+
 function createVideoGalleryThumbnail(target, link, index) {
     let gallery_item = document.createElement("div");
     gallery_item.classList.add("thumbnail-holder");
-    gallery_item.id = "thumbnail-" + index;
+    gallery_item.id = index;
     let thumbnail = document.createElement("img");
     thumbnail.src = thumbail_link_front + link + thumbnail_link_back;
     thumbnail.classList.add("gallery-thumbnail");
     gallery_item.appendChild(thumbnail);
     target.appendChild(gallery_item);
+    LOG("created video gallery item");
 }
 
 function createImageGallery() {
     for (let i = 0; i < imageNames.length; i++) {
-        createGalleryItem(gallery, imageNames[i], "image", i);
+        createGalleryItem(gallery, imageNames[i], i);
     }
+    LOG("created image gallery");
 }
+
 function createVideoGallery() {
     for (let i = 0; i < videoNames.length; i++) {
-        createVideoGalleryThumbnail(thumbnails, videoNames[i], "thumbnail", i + imageNames.length);
+        createVideoGalleryThumbnail(thumbnails, videoNames[i], i);
     }
+    LOG("created video gallery");
+}
+
+function UpdateSelectedVideo(index) {
+    let selectedVideo = document.getElementById("animation-iframe");
+    selectedVideo.src = embed_link_front + videoNames[index];
+    LOG("updated selected video");
+}
+
+function SetThumbnailClickEvents()
+{
+    let thumbnails = document.getElementsByClassName("thumbnail-holder");
+    for (let i = 0; i < thumbnails.length; i++) {
+        thumbnails[i].onclick = function () {
+            UpdateSelectedVideo(thumbnails[i].id);
+        }
+    }
+    LOG("set thumbnail click events");
 }
 
 function onLoad() {
     //create gallery on load
     createImageGallery();
     createVideoGallery();
+    UpdateSelectedVideo(0);
+    SetThumbnailClickEvents();
+    LOG("onload called");
 }
 
-fetchNames(imageNames, 'Static/file_names.txt', FetchImagesCallback);
-;
+begin();
+
+
+
+
+
+
 
 
