@@ -133,8 +133,13 @@
      text-align: center;
      padding-top: 20px;
      padding-bottom: 20px;
-     font-size: 4vw;
      max-width: 100vw;
+ }
+
+ @media (max-width: 768px) {
+     p {
+         font-size: 4vw;
+     }
  }
 
  #gallery,
@@ -175,7 +180,7 @@
 
  .puzzle-item.hovered {
      transition: all 0.3s ease-in-out;
-     transform: scale(1.1);
+     transform: scale(1.03);
      z-index: 1;
  }
 
