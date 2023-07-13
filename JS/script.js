@@ -1,3 +1,17 @@
+// Store the initial viewport size
+const initialViewportWidth = window.innerWidth;
+const initialViewportHeight = window.innerHeight;
+
+// Check for changes in viewport size
+window.addEventListener('resize', handleResize);
+
+function handleResize() {
+  // Check if the viewport size has changed
+  if (window.innerWidth !== initialViewportWidth || window.innerHeight !== initialViewportHeight) {
+    // Reset the viewport size to the initial values
+    window.resizeTo(initialViewportWidth, initialViewportHeight);
+  }
+}
 
 var navbar = document.getElementById('navbar');
 var isNavbarVisible = false;
@@ -199,6 +213,9 @@ function handleMouseDown(event) {
 }
 
 function handleMouseMove(event) {
+  if (event.touches.length > 1) {
+    event.preventDefault();
+  }
   if (!isDragging) return;
 
   const currentX = event.clientX || event.touches[0].clientX;
