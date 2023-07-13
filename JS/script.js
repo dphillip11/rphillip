@@ -239,23 +239,17 @@ function handleMouseUp() {
   isDragging = false;
 }
 
-// Prevent default scrolling and handle zooming when the lightbox is active
-function handleLightboxScroll(event) {
-  if (showLightbox) {
-    event.preventDefault();
-    updateZoom(event);
-  }
-}
+
 
 // Add event listeners for mousewheel, touch, and mouse drag events
 window.addEventListener('wheel', handleLightboxScroll, { passive: false });
-window.addEventListener('touchmove', handleLightboxScroll, { passive: false });
 lightboxContent.addEventListener('mousedown', handleMouseDown);
 lightboxContent.addEventListener('mousemove', handleMouseMove);
 lightboxContent.addEventListener('mouseup', handleMouseUp);
 lightboxContent.addEventListener('mouseleave', handleMouseUp);
 lightboxContent.addEventListener('touchstart', handleMouseDown);
 lightboxContent.addEventListener('touchmove', handleMouseMove);
+lightboxContent.addEventListener('touchmove', handleLightboxScroll, { passive: false });
 lightboxContent.addEventListener('touchend', handleMouseUp);
 
 
