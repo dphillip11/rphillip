@@ -222,16 +222,62 @@ function handleLightboxScroll(event) {
 
 // Add event listeners for mousewheel, touch, and mouse drag events
 window.addEventListener('wheel', handleLightboxScroll, { passive: false });
-window.addEventListener('touchmove', handleLightboxScroll, { passive: false });
+
 lightboxContent.addEventListener('mousedown', handleMouseDown);
 lightboxContent.addEventListener('mousemove', handleMouseMove);
 lightboxContent.addEventListener('mouseup', handleMouseUp);
 lightboxContent.addEventListener('mouseleave', handleMouseUp);
+
 lightboxContent.addEventListener('touchstart', handleMouseDown);
 lightboxContent.addEventListener('touchmove', handleMouseMove);
-lightboxContent.addEventListener('wheel', handleLightboxScroll, { passive: false });
 lightboxContent.addEventListener('touchend', handleMouseUp);
 
+// Pinch Zoom variables
+let initialDistance = null;
+let initialZoomLevel = 1;
+
+function handleTouchStart(event) {
+  if (event.touches.length === 2) {
+    // Pinch Zooming
+    const touch1 = event.touches[0];
+    const touch2 = event.touches[1];
+    initialDistance = getDistanceBetweenTouches(touch1, touch2);
+    initialZoomLevel = currentZoomLevel;
+  } else {
+    handleMouseDown(event);
+  }
+}
+
+function handleTouchMove(event) {
+  if (event.touches.length === 2) {
+    // Pinch Zooming
+    const touch1 = event.touches[0];
+    const touch2 = event.touches[1];
+    const currentDistance = getDistanceBetweenTouches(touch1, touch2);
+    const pinchDelta = currentDistance - initialDistance;
+
+    const zoomStep = 0.01;
+    const minZoomLevel = 0.5;
+    const maxZoomLevel = 4;
+
+    if (pinchDelta < 0 && currentZoomLevel > minZoomLevel) {
+      currentZoomLevel -= zoomStep;
+    } else if (pinchDelta > 0 && currentZoomLevel < maxZoomLevel) {
+      currentZoomLevel += zoomStep;
+    }
+     applyTransform();
+  } else {
+    handleMouseMove(event);
+  }
+}
+
+function handleTouchEnd(event) {
+  handleMouseUp(event);
+}
+
+function getDistanceBetweenTouches(touch1, touch2) {
+  return Math.hypot(touch2.clientX - touch1.clientX, touch2.clientY - touch1.clientY);
+}
 
 const videoFrames = document.querySelectorAll('.video-frame');
 const prevButton = document.querySelector('.prev-button');
