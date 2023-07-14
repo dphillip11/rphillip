@@ -1,4 +1,4 @@
-let DEBUG = true;
+let DEBUG = false;
 
 function LOG(message) {
   if (DEBUG) console.log(message);
@@ -308,7 +308,6 @@ function lightboxMouseDown(event) {
     if (event.touches && event.touches.length > 1) {
         return; // Ignore multi-touch events
     }
-//   event.preventDefault(); // Prevent default touch behavior
   mouseDown = true;
   mouseDownX = event.clientX || event.touches[0].clientX;
   mouseDownY = event.clientY || event.touches[0].clientY;
