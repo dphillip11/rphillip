@@ -1,347 +1,273 @@
-// Store the initial viewport size
-const initialViewportWidth = window.innerWidth;
-const initialViewportHeight = window.innerHeight;
+let DEBUG = true;
 
-// Check for changes in viewport size
-window.addEventListener('resize', handleResize);
-
-function handleResize() {
-  // Check if the viewport size has changed
-  if (window.innerWidth !== initialViewportWidth || window.innerHeight !== initialViewportHeight) {
-    // Reset the viewport size to the initial values
-    window.resizeTo(initialViewportWidth, initialViewportHeight);
-  }
+function LOG(message) {
+  if (DEBUG) console.log(message);
 }
 
-var navbar = document.getElementById('navbar');
-var isNavbarVisible = false;
+let cssUrl = 'CSS/test.css'; // Initial CSS file URL
 
-window.addEventListener('scroll', function() {
-  var scrollPosition = window.pageYOffset;
+// Function to update the CSS
+function updateCSS() {
+  const timestamp = Date.now();
+  const cacheBusterUrl = cssUrl + '?t=' + timestamp;
 
-  if (scrollPosition < 100 && !isNavbarVisible) {
-    navbar.classList.add('show');
-    isNavbarVisible = true;
-  } else if (scrollPosition >= 100 && isNavbarVisible) {
-    navbar.classList.remove('show');
-    isNavbarVisible = false;
-  }
-});
+  // Create a new <link> element with the updated CSS URL
+  const newLink = document.createElement('link');
+  newLink.rel = 'stylesheet';
+  newLink.href = cacheBusterUrl;
 
-window.addEventListener('mousemove', function(event) {
-  var mouseY = event.clientY;
+  // Find the existing <link> element
+  const existingLink = document.querySelector('link[href^="CSS/test.css"]');
 
-  if (mouseY <= 160 && !isNavbarVisible) {
-    navbar.classList.add('show');
-    isNavbarVisible = true;
-  } else if (mouseY > 160 && isNavbarVisible && window.pageYOffset >= 100) {
-    navbar.classList.remove('show');
-    isNavbarVisible = false;
-  }
-});
-
-
-let offsetFromTop = 150;
-
-function scrollToSection(sectionId) {
-  var section = document.getElementById(sectionId);
-  var topOffset = section.offsetTop - offsetFromTop;
-  window.scrollTo({ top: topOffset, behavior: 'smooth' });
-}
-
-const navLinks = document.querySelectorAll('.nav-link');
-
-window.addEventListener('DOMContentLoaded', function() {
-  navLinks.forEach(function(navLink) {
-    navLink.addEventListener('click', function(event) {
-      event.preventDefault();
-      var sectionId = navLink.getAttribute('href');
-      scrollToSection(sectionId);
-    });
-  });
-});
-
-const boxes = document.querySelectorAll('.puzzle-item');
-let enlargedItem = 0;
-let showLightbox = false;
-let isDragging = false;
-let startX;
-let startY;
-let translateX = 0;
-let translateY = 0;
-let thumbnailOffset = 0;
-
-const lightboxOverlay = document.getElementById('lightbox-overlay');
-const lightboxImage = document.getElementById('lightbox-image');
-const lightboxContent = document.getElementById('lightbox-content');
-const lightboxThumbnails = document.getElementById('lightbox-thumbnails');
-const lightboxClose = document.getElementById('lightbox-close');
-const lightboxPrev = document.getElementById('lightbox-prev');
-const lightboxNext = document.getElementById('lightbox-next');
-let currentZoomLevel = 1;
-
-// Display the lightbox gallery when an image is clicked
-boxes.forEach(function (box, index) {
-  box.addEventListener('click', function () {
-    enlargedItem = index;
-    updateLightbox();
-    lightboxOverlay.style.display = 'block';
-    showLightbox = true;
-    document.body.classList.add('no-scroll');
-  });
-  box.addEventListener("mouseover", function () {
-        box.classList.add("hovered");
-  });
-  box.addEventListener("touchstart", function () {
-        box.classList.add("hovered");
-    });
-    box.addEventListener("mouseout", function () {
-        box.classList.remove("hovered");
-    });
-  box.addEventListener("touchend", function () {
-        box.classList.remove("hovered");
-    });
-});
-
-// Hide the lightbox gallery when close button is clicked
-lightboxClose.addEventListener('click', function () {
-  lightboxOverlay.style.display = 'none';
-  showLightbox = false;
-  document.body.classList.remove('no-scroll');
-  resetZoomAndTranslate();
-});
-
-// Update the lightbox gallery with the selected image and thumbnails
-function updateLightbox() {
-  var lightboxOverlay = document.getElementById('lightbox-overlay');
- var viewportWidth = window.innerWidth / window.devicePixelRatio;
-  var viewportHeight = window.innerHeight / window.devicePixelRatio;
-  lightboxOverlay.width = viewportWidth;
-  lightboxOverlay.height = viewportHeight;
-  const imageSrc = boxes[enlargedItem].querySelector('img').src;
-  lightboxImage.src = imageSrc;
-  resetZoomAndTranslate();
-
-  // Remove previous thumbnails
-  lightboxThumbnails.innerHTML = '';
-  var thumbnailOffset = 0;
-
-  boxes.forEach(function (box, index) {
-    const thumbnailSrc = box.querySelector('img').src;
-    const thumbnail = document.createElement('img');
-    thumbnail.classList.add('lightbox-thumbnail');
-    thumbnail.src = thumbnailSrc;
-    thumbnail.addEventListener('click', function () {
-      enlargedItem = index;
-      updateLightbox();
-    });
-    thumbnail.addEventListener('touchstart', function () {
-      enlargedItem = index;
-      updateLightbox();
-    });
-    lightboxThumbnails.appendChild(thumbnail);
-  });
-
-  offsetThubmbnails();
-
-  // Add event listeners to previous and next buttons
-  lightboxPrev.addEventListener('click', showPrevImage);
-  lightboxNext.addEventListener('click', showNextImage);
-}
-
-function offsetThubmbnails() {
-  var thumbnails = document.querySelectorAll('.lightbox-thumbnail');
-  offset = thumbnails[enlargedItem].offsetLeft - thumbnails[0].offsetLeft;
-  thumbnails[enlargedItem].style.border = '2px solid var(--color-red)';
-  lightboxThumbnails.style.transform = `translateX(${-offset}px)`;
-}
-
-// Function to show the previous image
-function showPrevImage() {
-  if (enlargedItem === 0) {
-    enlargedItem = boxes.length - 1;
+  // Replace the existing <link> element with the new one
+  if (existingLink) {
+    existingLink.parentNode.replaceChild(newLink, existingLink);
   } else {
-    enlargedItem--;
-  }
-  updateLightbox();
-}
-
-// Function to show the next image
-function showNextImage() {
-  if (enlargedItem === boxes.length - 1) {
-    enlargedItem = 0;
-  } else {
-    enlargedItem++;
-  }
-  updateLightbox();
-}
-
-// Reset the zoom level and translation of the image
-function resetZoomAndTranslate() {
-  currentZoomLevel = 1;
-  translateX = 0;
-  translateY = 0;
-  applyTransform();
-}
-
-// Update the zoom level and translation of the image based on the scroll event
-function updateZoom(event) {
-  const scrollDelta = Math.sign(event.deltaY);
-  const zoomStep = 0.1;
-  const minZoomLevel = 0.5;
-  const maxZoomLevel = 4;
-
-  if (scrollDelta > 0 && currentZoomLevel > minZoomLevel) {
-    currentZoomLevel -= zoomStep;
-  } else if (scrollDelta < 0 && currentZoomLevel < maxZoomLevel) {
-    currentZoomLevel += zoomStep;
-  }
-  applyTransform();
-}
-
-// Update the position and scale of the image using CSS transform
-function applyTransform() {
-  lightboxImage.style.transform = `translate(${translateX}px, ${translateY}px) scale(${currentZoomLevel})`;
-}
-
-// Handle mouse drag to pan and translate the image within the container
-function handleMouseDown(event) {
-  event.preventDefault();
-  isDragging = true;
-  startX = event.clientX || event.touches[0].clientX;
-  startY = event.clientY || event.touches[0].clientY;
-}
-
-function handleMouseMove(event) {
-  if (!isDragging) return;
-
-  const currentX = event.clientX || event.touches[0].clientX;
-  const currentY = event.clientY || event.touches[0].clientY;
-  const diffX = currentX - startX;
-  const diffY = currentY - startY;
-
-  translateX += diffX;
-  translateY += diffY;
-  startX = currentX;
-  startY = currentY;
-  applyTransform();
-}
-
-function handleMouseUp() {
-  isDragging = false;
-}
-
-// Prevent default scrolling and handle zooming when the lightbox is active
-function handleLightboxScroll(event) {
-  if (showLightbox) {
-    event.preventDefault();
-    updateZoom(event);
+    // If no existing <link> element found, append the new one to the <head>
+    document.head.appendChild(newLink);
   }
 }
 
-// Add event listeners for mousewheel, touch, and mouse drag events
-// window.addEventListener('wheel', handleLightboxScroll, { passive: false });
-window.addEventListener('touchstart', handleTouchStart);
-// window.addEventListener('touchmove', handleTouchMove, { passive: false });
-// window.addEventListener('touchend', handleTouchEnd, { passive: false });
+// Disable caching and clear cache
+function makeRequest(url) {
+    const timestamp = Date.now();
+    const cacheBusterUrl = url + '?t=' + timestamp;
+    const options = {};
 
-lightboxContent.addEventListener('mousedown', handleMouseDown);
-lightboxContent.addEventListener('mousemove', handleMouseMove);
-lightboxContent.addEventListener('mouseup', handleMouseUp);
-lightboxContent.addEventListener('mouseleave', handleMouseUp);
+    options.headers = {
+      'Cache-Control': 'no-cache'
+    };
+  
 
-lightboxContent.addEventListener('touchstart', handleTouchStart, { passive: false });
-lightboxContent.addEventListener('touchmove', handleTouchMove, { passive: false });
-lightboxContent.addEventListener('touchend', handleTouchEnd, { passive: false });
-
-// Pinch Zoom variables
-let initialDistance = null;
-let initialZoomLevel = 1;
-
-function handleTouchStart(event) {
-  if (event.touches.length > 1)
-     event.preventDefault();
-  if (event.touches.length === 2) {
-    // Pinch Zooming
-    const touch1 = event.touches[0];
-    const touch2 = event.touches[1];
-    initialDistance = getDistanceBetweenTouches(touch1, touch2);
-    initialZoomLevel = currentZoomLevel;
-  } else {
-    handleMouseDown(event);
-  }
+  fetch(cacheBusterUrl, options)
+    .then(response => {
+      if (url === 'CSS/test.css') {
+        updateCSS(); // Update the CSS after fetching the new version
+        }
+        begin();
+    })
+    .catch(error => {
+      console.error('Request error:', error);
+    });
 }
 
-function handleTouchMove(event) {
-  if (event.touches.length === 2) {
-    // Pinch Zooming
-    const touch1 = event.touches[0];
-    const touch2 = event.touches[1];
-    const currentDistance = getDistanceBetweenTouches(touch1, touch2);
-    const pinchDelta = currentDistance - initialDistance;
+if (DEBUG){
+    makeRequest('CSS/test.css');
+}
 
-    const zoomStep = 0.01;
-    const minZoomLevel = 0.5;
-    const maxZoomLevel = 4;
+function fetchNames(outputList, filePath, callback) {
+  fetch(filePath)
+    .then(response => response.text())
+    .then(data => {
+      const fileNames = data.split(',').map(fileName => fileName.trim().replace(/"/g, ''));
+      
+      outputList.push(...fileNames); // Add the fetched image names to the output list
 
-    if (pinchDelta < 0 && currentZoomLevel > minZoomLevel) {
-      currentZoomLevel -= zoomStep;
-    } else if (pinchDelta > 0 && currentZoomLevel < maxZoomLevel) {
-      currentZoomLevel += zoomStep;
+      callback(outputList);
+    })
+    .catch(error => {
+      console.error('Error reading file:', error);
+      callback([]);
+    });
+}
+
+function FetchImagesCallback() { fetchNames(videoNames, 'Static/youtube_links.txt', FetchVideosCallback)}
+function FetchVideosCallback() { onLoad(); }
+//begin will start the callback chain
+function begin() {
+    fetchNames(imageNames, 'Static/file_names.txt', FetchImagesCallback);
+    LOG("begin called");
+}
+
+const imageNames = []; // Output list to store the fetched image names
+const videoNames = []; // Output list to store the fetched video names
+
+let embed_link_front = "https://www.youtube.com/embed/";
+function getEmbedLink(index)
+{
+    return embed_link_front + videoNames[index];
+}
+
+let thumbail_link_front = "https://img.youtube.com/vi/";
+let thumbnail_link_back = "/0.jpg";
+function getThumbnailLink(index)
+{
+    return thumbail_link_front + videoNames[index] + thumbnail_link_back;
+}
+
+function getImagePath(index)
+{
+    return "Static/Gallery/" + imageNames[index];
+}
+
+let imageGallery = document.getElementById("gallery");
+let lightboxThumbnails = document.getElementById("lightbox-thumbnails");
+let videoThumbnails = document.getElementById("video-thumbnails");
+
+let selectedVideo = 0;
+let selectedImage = 0;
+
+function galleryItemClickEvent(index) {
+    changeSelectedImage(index);
+    showLightbox();
+    LOG("gallery item clicked");
+ }
+function videoThumbnailClickEvent(index) {
+    changeSelectedVideo(index);
+    LOG("video thumbnail clicked");
+}
+function lightboxThumbnailClickEvent(index) {
+    changeSelectedImage(index);
+    LOG("lightbox thumbnail clicked");
+}
+
+// generic function for adding a contained image to a target
+function addContainedImage(target, container_class, container_id, image_class, src)
+{
+    let container = document.createElement("div");
+    container.classList.add(container_class);
+    container.id = container_id;
+    let image = document.createElement("img");
+    image.classList.add(image_class);
+    image.src = src;
+    container.appendChild(image);
+    target.appendChild(container);
+    return container;
+}
+
+function createGalleryImage(index) {
+    let container = addContainedImage(imageGallery, "gallery-item", "gallery-item-" + index, "gallery-image", getImagePath(index));
+    container.addEventListener("click", galleryItemClickEvent.bind(null,index));
+}
+
+function createLightboxThumbnail(index) {
+    let container = addContainedImage(lightboxThumbnails, "thumbnail-holder", "lightbox-thumbnail-" + index, "lightbox-thumbnail-image", getImagePath(index));
+    container.onclick = lightboxThumbnailClickEvent.bind(null,index);
+}
+
+function createVideoThumbnail(index) {
+    let container = addContainedImage(videoThumbnails, "thumbnail-holder", "video-thumbnail-" + index, "video-thumbnail-image", getThumbnailLink(index));
+    container.addEventListener("click", videoThumbnailClickEvent.bind(null,index));
+}
+
+function createImageGallery() {
+    for (let i = 0; i < imageNames.length; i++) {
+        createGalleryImage(i);
     }
-     applyTransform();
-  } else {
-    handleMouseMove(event);
-  }
+    LOG("created image gallery");
 }
 
-function handleTouchEnd(event) {
-  handleMouseUp(event);
+function createVideoGallery() {
+    for (let i = 0; i < videoNames.length; i++) {
+        createVideoThumbnail(i);
+    }
+    LOG("created video gallery");
 }
 
-function getDistanceBetweenTouches(touch1, touch2) {
-  return Math.hypot(touch2.clientX - touch1.clientX, touch2.clientY - touch1.clientY);
+function createLightboxGallery() {
+    for (let i = 0; i < imageNames.length; i++) {
+        createLightboxThumbnail(i);
+    }
+    LOG("created lightbox gallery");
 }
 
-const videoFrames = document.querySelectorAll('.video-frame');
-const prevButton = document.querySelector('.prev-button');
-const nextButton = document.querySelector('.next-button');
-let currentVideoIndex = 0;
+function changeSelectedVideo(index) {
+    let animationIframe = document.getElementById("animation-iframe");
+    animationIframe.src = embed_link_front + videoNames[index];
+    //update CSS
+    let oldSelected = document.getElementById("video-thumbnail-" + selectedVideo);
+    if (oldSelected != null)
+        oldSelected.classList.remove("selected");
+    let newSelected = document.getElementById("video-thumbnail-" + index);
+    if (newSelected != null)
+        newSelected.classList.add("selected");
+    //update index
+    selectedVideo = index;
+    LOG("updated selected video");
+}
 
-var thumbnails = document.querySelectorAll('.thumbnail');
-var activeThumb = 0;
-// Initialize the carousel
-videoFrames[currentVideoIndex].classList.add('active');
-thumbnails[activeThumb].classList.add('activeThumb');
+function changeSelectedImage(index) {
+    let lightboxImage = document.getElementById("lightbox-main-image");
+    lightboxImage.src = getImagePath(index);
+    //update CSS
+    let oldSelected = document.getElementById("lightbox-thumbnail-" + selectedImage);
+    if (oldSelected != null)
+        oldSelected.classList.remove("selected");
+    let newSelected = document.getElementById("lightbox-thumbnail-" + index);
+    if (newSelected != null)
+        newSelected.classList.add("selected");
+    //update index
+    selectedImage = index;
+    LOG("updated selected image");
+}
 
-// Navigate to the previous video
-prevButton.addEventListener('click', function() {
-  videoFrames[currentVideoIndex].classList.remove('active');
-  thumbnails[activeThumb].classList.remove('activeThumb');
+function previousImage() {
+    let newIndex = selectedImage - 1;
+    if (newIndex < 0)
+        newIndex = imageNames.length - 1;
+    changeSelectedImage(newIndex);
+}
 
-  currentVideoIndex = (currentVideoIndex - 1 + videoFrames.length) % videoFrames.length;
-  activeThumb = (activeThumb - 1 + thumbnails.length) % thumbnails.length;
+function nextImage() {
+    let newIndex = selectedImage + 1;
+    if (newIndex >= imageNames.length)
+        newIndex = 0;
+    changeSelectedImage(newIndex);
+    LOG("next image called");
+}
 
-  videoFrames[currentVideoIndex].classList.add('active');
-  thumbnails[activeThumb].classList.add('activeThumb');
-});
+function nextVideo() {
+    let newIndex = selectedVideo + 1;
+    if (newIndex >= videoNames.length)
+        newIndex = 0;
+    changeSelectedVideo(newIndex);
+    LOG("next video called");
+}
 
-// Navigate to the next video
-nextButton.addEventListener('click', function() {
-  videoFrames[currentVideoIndex].classList.remove('active');
-  thumbnails[activeThumb].classList.remove('activeThumb');
+function previousVideo() {
+    let newIndex = selectedVideo - 1;
+    if (newIndex < 0)
+        newIndex = videoNames.length - 1;
+    changeSelectedVideo(newIndex);
+}
 
-  currentVideoIndex = (currentVideoIndex + 1) % videoFrames.length;
-  activeThumb = (activeThumb + 1) % thumbnails.length;
+function showLightbox() {
+    let overlay = document.getElementById("lightbox-overlay");
+    overlay.style.display = "block";
+    document.body.classList.add("no-scroll");
+    LOG("showed image viewer");
+}
 
-  videoFrames[currentVideoIndex].classList.add('active');
-  thumbnails[activeThumb].classList.add('activeThumb');
-});
+function hideLightbox() {
+    let imageViewer = document.getElementById("lightbox-overlay");
+    imageViewer.style.display = "none";
+    document.body.classList.remove("no-scroll");
+    LOG("hid image viewer");
+}
 
+function addLightboxEventListeners() {
+    let closeButton = document.getElementById("lightbox-close");
+    closeButton.addEventListener("click", hideLightbox);
+    let previousButton = document.getElementById("lightbox-previous");
+    previousButton.addEventListener("click", previousImage);
+    let nextButton = document.getElementById("lightbox-next");
+    nextButton.addEventListener("click", nextImage);
+}
 
+function onLoad() {
+    //create gallery on load
+    createImageGallery();
+    createVideoGallery();
+    createLightboxGallery();
+    addLightboxEventListeners();
+    changeSelectedVideo(2);
+    changeSelectedImage(2);
 
+    LOG("onload called");
+}
 
-
+if(!DEBUG)
+    begin();
 
 
 

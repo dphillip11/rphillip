@@ -3,192 +3,33 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Raymond Phillip</title>
+    <title>Test</title>
     <link rel="stylesheet" href="CSS/style.css">
 </head>
 
 <body>
-    <div class="header">
-        <h1>Raymond Phillip</h1>
-    </div>
-
-    <nav id="navbar">
-        <a class="nav-link" id="gallery-link" href="gallery">Gallery</a>
-        <a class="nav-link" id="animation-link" href="animation">Animation</a>
-        <a class="nav-link" id="contact-link" href="about">About Me</a>
-        <a class="nav-link" id="contact-link" href="contact">Contact</a>
-    </nav>
-
-    <div id="banner-image">
-        <img src="Static/Gallery/longboard.png" alt="Banner Image">
-    </div>
-
-    <!-- Add a hidden lightbox overlay -->
-    <div id="lightbox-overlay" style="display: none;">
-        <div id="lightbox-container">
-            <div id="lightbox-content">
-                <div id="lightbox-image-container">
-                    <img id="lightbox-image" src="" alt="">
-                </div>
-                <div id="lightbox-thumbnails"></div>
-            </div>
-            <div id="lightbox-close">&times;</div>
-            <div id="lightbox-prev">&#10094;</div>
-            <div id="lightbox-next">&#10095;</div>
+    <div class="section" id="image-gallery">
+        <!-- use getNames.exe to update file list, you can run Static/getNames.exe in the terminal -->
+        <div class="section-title" id="gallery-heading">Gallery</div>
+        <div id="gallery">
+            <!-- populated with images -->
         </div>
     </div>
 
-    <div id="gallery">
-        <h1>Gallery</h1>
-        <div class=" puzzle-container">
-            <div class="puzzle-item">
-                <img src="Static/Gallery/besaidshore.jpg" alt="Beach Scene">
+    <div class="section" id="animations">
+        <div class="section-title" id="animations-heading">Animations</div>
+        <div id="animations">
+            <div id="animation-player">
+                <iframe id="animation-iframe" src="" frameborder="0" allowfullscreen></iframe>
             </div>
-            <div class="puzzle-item">
-                <img src="Static/Gallery/horserider.png" alt="Horse Rider">
-            </div>
-            <div class="puzzle-item">
-                <img src="Static/Gallery/girlwithballoon.png" alt="Girl With Balloon">
-            </div>
-            <div class="puzzle-item">
-                <img src="Static/Gallery/screenwriter base.png" alt="Screenwriter">
-            </div>
-            <div class="puzzle-item">
-                <img src="Static/Gallery/pirate2c.png" alt="Pirate Girl">
-            </div>
-            <div class="puzzle-item">
-                <img src="Static/Gallery/screenwriter_character1a.png" alt="Screenwriter by Lamplight">
-            </div>
-            <div class="puzzle-item">
-                <img src="Static/Gallery/mermaid.png" alt="Risidio Mermaid">
-            </div>
-            <div class="puzzle-item">
-                <img src="Static/Gallery/mermaid2twitter.png" alt="Riding the Stream">
-            </div>
-            <div class="puzzle-item">
-                <img src="Static/Gallery/Mermay tail.png" alt="Mermay Submission">
-            </div>
-            <div class="puzzle-item">
-                <img src="Static/Gallery/silhouette 2.png" alt="Ship Wreck">
-            </div>
-            <div class="puzzle-item">
-                <img src="Static/Gallery/ordinals 1a.png" alt="Mercenary">
-            </div>
-            <div class="puzzle-item">
-                <img src="Static/Gallery/pirateidea5.png" alt="Gangly Pirate">
-            </div>
-            <div class="puzzle-item">
-                <img src="Static/Gallery/nomansskycave2.png" alt="No man's sky concept">
-            </div>
-            <div class="puzzle-item">
-                <img src="Static/Gallery/landscape.png" alt="No man's sky concept surface">
-            </div>
-            <div class="puzzle-item">
-                <img src="Static/Gallery/screenwriter_character1.png" alt="Screenwriter Character Description">
-            </div>
-            <div class="puzzle-item">
-                <img src="Static/Gallery/blackline1.png" alt="Black Haired Girl">
-            </div>
-            <div class="puzzle-item">
-                <img src="Static/Gallery/pirate1d.png" alt="Pirate Lady">
-            </div>
-            <div class="puzzle-item">
-                <img src="Static/Gallery/ordinals 3.png" alt="Samurai">
-            </div>
-            <div class="puzzle-item">
-                <img src="Static/Gallery/ordinals1b.png" alt="Mercenary with Background">
-            </div>
-            <div class="puzzle-item">
-                <img src="Static/Gallery/hercules 5.png" alt="Hercules">
-            </div>
-            <div class="puzzle-item">
-                <img src="Static/Gallery/Reece Grace8.png" alt="Eagle Tattoo">
-            </div>
-            <div class="puzzle-item">
-                <img src="Static/Gallery/tree.png" alt="Creepy Tree">
-            </div>
-            <div class="puzzle-item">
-                <img src="Static/Gallery/tree1.png" alt="Creepy Tree in Color">
+            <div class="thumbnails" id="video-thumbnails">
+                <!-- populated with thumbnails -->
             </div>
         </div>
     </div>
 
-
-    <div id="animation">
-        <h1>Animation</h1>
-        <div class="video-carousel">
-            <div class="video-frame active">
-                <iframe src="https://www.youtube.com/embed/_msV5WNpCBA" title="YouTube video player" frameborder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    allowfullscreen></iframe>
-            </div>
-            <div class="video-frame">
-                <iframe src="https://www.youtube.com/embed/frNrP5eVZbg" title="YouTube video player" frameborder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    allowfullscreen></iframe>
-            </div>
-            <div class="video-frame">
-                <iframe src="https://www.youtube.com/embed/2hND6p_URAw" title="YouTube video player" frameborder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    allowfullscreen></iframe>
-            </div>
-            <div class="video-frame">
-                <iframe src="https://www.youtube.com/embed/TmcVo-qb8Fs" title="YouTube video player" frameborder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    allowfullscreen></iframe>
-            </div>
-            <div class="video-frame">
-                <iframe width="560" height="315" src="https://www.youtube.com/embed/oqfpHw8BV_c"
-                    title="YouTube video player" frameborder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    allowfullscreen></iframe>
-            </div>
-            <div class="video-frame">
-                <iframe width="560" height="315" src="https://www.youtube.com/embed/qEQmj6LcMTk"
-                    title="YouTube video player" frameborder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    allowfullscreen></iframe>
-            </div>
-            <div class="video-frame">
-                <iframe width="560" height="315" src="https://www.youtube.com/embed/m6K-4fqicnQ"
-                    title="YouTube video player" frameborder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    allowfullscreen></iframe>
-            </div>
-            <div class="video-controls">
-                <button class="prev-button">&lt;</button>
-                <button class="next-button">&gt;</button>
-            </div>
-        </div>
-        <div class="video-thumbnails">
-            <div class="thumbnail">
-                <image src="https://img.youtube.com/vi/_msV5WNpCBA/0.jpg"></image>
-            </div>
-            <div class=" thumbnail">
-                <image src="https://img.youtube.com/vi/frNrP5eVZbg/0.jpg"></image>
-            </div>
-            <div class="thumbnail">
-                <image src="https://img.youtube.com/vi/2hND6p_URAw/0.jpg"></image>
-            </div>
-            <div class="thumbnail">
-                <image src="https://img.youtube.com/vi/TmcVo-qb8Fs/0.jpg"></image>
-            </div>
-            <div class="thumbnail">
-                <image src="https://img.youtube.com/vi/oqfpHw8BV_c/0.jpg"></image>
-            </div>
-            <div class="thumbnail">
-                <image src="https://img.youtube.com/vi/qEQmj6LcMTk/0.jpg"></image>
-            </div>
-            <div class="thumbnail">
-                <image src="https://img.youtube.com/vi/m6K-4fqicnQ/0.jpg"></image>
-            </div>
-        </div>
-    </div>
-
-
-
-    <div id="about">
-        <h1>About Me</h1>
+    <div class="section" id="about">
+        <div class="section-title" id="about-heading">About Me</div>
         <p>
             As an artist with a passion for illustration and animation, I bring creativity, skill, and dedication to
             every
@@ -224,8 +65,8 @@
         </p>
     </div>
 
-    <div id="contact">
-        <h1 style="text-align: center;">Contact</h1>
+    <div class="section" id="contact">
+        <div class="section-title" id="contact-heading">Contact</div>
         <p>
             If you would like to get in touch, please feel free to contact me via email or phone.<br>
             Email: <span style="font-family: 'Arial';">r.phillip@hotmail.co.uk</span><br>Mobile:
@@ -233,7 +74,18 @@
         </p>
     </div>
 
-    <script src="JS/script.js"></script>
+    <div id="lightbox-overlay">
+        <div id="light-box">
+            <img id="lightbox-main-image" src="" alt="image">
+            <div class="lightbox-control" id="lightbox-close">X</div>
+            <div class="lightbox-control" id="lightbox-next">&#10095;</div>
+            <div class="lightbox-control" id="lightbox-previous">&#10094;</div>
+            <div class="thumbnails" id="lightbox-thumbnails">
+                <!-- populated with thumbnails -->
+            </div>
+        </div>
+
+        <script src="JS/script.js"></script>
 </body>
 
 </html>
