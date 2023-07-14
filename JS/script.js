@@ -275,6 +275,11 @@ function lightboxMouseDown(event) {
     mouseDown = true;
     mouseDownX = event.clientX;
     mouseDownY = event.clientY;
+    //check for touch event
+    if (event.touches != null) {
+        mouseDownX = event.touches[0].clientX;
+        mouseDownY = event.touches[0].clientY;
+    }
     LOG("mouse down at: " + mouseDownX + ", " + mouseDownY);
 }
 
@@ -287,6 +292,11 @@ function lightboxMouseMove(event) {
     if (mouseDown) {
         let deltaX = event.clientX - mouseDownX;
         let deltaY = event.clientY - mouseDownY;
+        //check for touch event
+        if (event.touches != null) {
+            deltaX = event.touches[0].clientX - mouseDownX;
+            deltaY = event.touches[0].clientY - mouseDownY;
+        }
         LOG("delta: " + deltaX + ", " + deltaY);
         let image = document.getElementById("lightbox-main-image");
         image.style.transform = "translate(" + deltaX + "px, " +  deltaY + "px)";
