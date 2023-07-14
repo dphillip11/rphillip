@@ -64,6 +64,36 @@
      line-height: 1.5;
  }
 
+ #main-header {
+     font-family: Miraikato;
+     /* position: fixed;
+     top: 0; */
+     height: 20vh;
+     padding: 0.5vh;
+     font-size: 6vh;
+     font-weight: bold;
+     width: 100%;
+     z-index: 50;
+ }
+
+ #navbar {
+     /* position: fixed;
+     top: 8vh; */
+     height: 14vh;
+     width: 100%;
+     z-index: 50;
+     padding: 0.5vh;
+ }
+
+ #navbar a {
+     padding: 10px;
+     text-decoration: none;
+     font-family: Arial, Helvetica, sans-serif;
+     font-size: 2vw;
+     font-weight: normal;
+     color: var(--color-beige);
+ }
+
  .section-title {
      font-family: 'Miraikato';
      font-size: 5vh;
