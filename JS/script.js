@@ -305,6 +305,9 @@ function addLightboxEventListeners() {
 let touchIdentifier = null; // Track the touch identifier for touch events
 
 function lightboxMouseDown(event) {
+    if (event.touches && event.touches.length > 1) {
+        return; // Ignore multi-touch events
+    }
   event.preventDefault(); // Prevent default touch behavior
   mouseDown = true;
   mouseDownX = event.clientX || event.touches[0].clientX;
