@@ -117,6 +117,27 @@ let currentScale = 1;
 let minScale = 0.5;
 let maxScale = 5;
 
+//fix navlinks
+let offsetFromTop = 0.14 * window.innerHeight;
+
+function scrollToSection(sectionId) {
+  var section = document.getElementById(sectionId);
+  var topOffset = section.offsetTop - offsetFromTop;
+  window.scrollTo({ top: topOffset, behavior: 'smooth' });
+}
+
+const navLinks = document.querySelectorAll('.nav-link');
+
+window.addEventListener('DOMContentLoaded', function() {
+  navLinks.forEach(function(navLink) {
+    navLink.addEventListener('click', function(event) {
+      event.preventDefault();
+      var sectionId = navLink.getAttribute('href');
+      scrollToSection(sectionId);
+    });
+  });
+});
+
 function galleryItemClickEvent(index) {
     changeSelectedImage(index);
     showLightbox();
