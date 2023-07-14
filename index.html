@@ -20,7 +20,10 @@
         <div class="section-title" id="animations-heading">Animations</div>
         <div id="animations">
             <div id="animation-player">
+                <iframe id="animation-iframe-buffer" src="" frameborder="0" allowfullscreen></iframe>
                 <iframe id="animation-iframe" src="" frameborder="0" allowfullscreen></iframe>
+                <div id="animation-next">&#10095;</div>
+                <div id="animation-previous">&#10094;</div>
             </div>
             <div class="thumbnails" id="video-thumbnails">
                 <!-- populated with thumbnails -->
@@ -75,7 +78,7 @@
     </div>
 
     <div id="lightbox-overlay">
-        <div id="light-box">
+        <div id="lightbox">
             <img id="lightbox-main-image" src="" alt="image">
             <div class="lightbox-control" id="lightbox-close">X</div>
             <div class="lightbox-control" id="lightbox-next">&#10095;</div>

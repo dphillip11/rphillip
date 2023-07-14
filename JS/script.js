@@ -4,7 +4,7 @@ function LOG(message) {
   if (DEBUG) console.log(message);
 }
 
-let cssUrl = 'CSS/test.css'; // Initial CSS file URL
+let cssUrl = 'CSS/style.css'; // Initial CSS file URL
 
 // Function to update the CSS
 function updateCSS() {
@@ -52,7 +52,7 @@ function makeRequest(url) {
 }
 
 if (DEBUG){
-    makeRequest('CSS/test.css');
+    makeRequest(cssUrl);
 }
 
 function fetchNames(outputList, filePath, callback) {
@@ -171,6 +171,16 @@ function createLightboxGallery() {
     LOG("created lightbox gallery");
 }
 
+function calculateThumbnailOffset(index) {
+    let first_thumbnail = document.getElementById("lightbox-thumbnail-0");
+    LOG("first thumbnail offset: " + first_thumbnail.offsetLeft)
+    let thumbnail = document.getElementById("lightbox-thumbnail-" + index);
+    LOG("thumbnail offset: " + thumbnail.offsetLeft)
+    let offset = first_thumbnail.offsetLeft - thumbnail.offsetLeft;
+    LOG("offset: " + offset);
+    return offset;
+}
+
 function changeSelectedVideo(index) {
     let animationIframe = document.getElementById("animation-iframe");
     animationIframe.src = embed_link_front + videoNames[index];
@@ -199,6 +209,9 @@ function changeSelectedImage(index) {
     //update index
     selectedImage = index;
     LOG("updated selected image");
+    let offset = calculateThumbnailOffset(index);
+    LOG("offset: " + offset);
+    lightboxThumbnails.style.transform = "translateX(" + offset + "px)";
 }
 
 function previousImage() {
@@ -254,14 +267,65 @@ function addLightboxEventListeners() {
     nextButton.addEventListener("click", nextImage);
 }
 
+let mouseDown = false;
+let mouseDownX = 0;
+let mouseDownY = 0;
+
+function lightboxMouseDown(event) {
+    mouseDown = true;
+    mouseDownX = event.clientX;
+    mouseDownY = event.clientY;
+    LOG("mouse down at: " + mouseDownX + ", " + mouseDownY);
+}
+
+function lightboxMouseUp(event) {
+    LOG("mouse up");
+    mouseDown = false;
+}
+
+function lightboxMouseMove(event) {
+    if (mouseDown) {
+        let deltaX = event.clientX - mouseDownX;
+        let deltaY = event.clientY - mouseDownY;
+        LOG("delta: " + deltaX + ", " + deltaY);
+        let image = document.getElementById("lightbox-main-image");
+        image.style.transform = "translate(" + deltaX + "px, " +  deltaY + "px)";
+    }
+}
+
+function addCustomMouseEventsLightbox() {
+    let mainImage = document.getElementById("lightbox-main-image");
+    mainImage.addEventListener("mousedown", lightboxMouseDown);
+    mainImage.addEventListener("mouseup", lightboxMouseUp);
+    mainImage.addEventListener("mousemove", lightboxMouseMove);
+    mainImage.addEventListener("mouseleave", lightboxMouseUp);
+    //touch
+    mainImage.addEventListener("touchstart", lightboxMouseDown);
+    mainImage.addEventListener("touchend", lightboxMouseUp);
+    mainImage.addEventListener("touchmove", lightboxMouseMove);
+    mainImage.addEventListener("touchcancel", lightboxMouseUp);
+
+}
+
+
+function addVideoEventListeners() {
+    let previousButton = document.getElementById("animation-previous");
+    previousButton.addEventListener("click", previousVideo);
+    let nextButton = document.getElementById("animation-next");
+    nextButton.addEventListener("click", nextVideo);
+}
+
+
 function onLoad() {
     //create gallery on load
     createImageGallery();
     createVideoGallery();
     createLightboxGallery();
     addLightboxEventListeners();
-    changeSelectedVideo(2);
-    changeSelectedImage(2);
+    addCustomMouseEventsLightbox();
+    addVideoEventListeners();
+    changeSelectedVideo(0);
+    changeSelectedImage(0);
 
     LOG("onload called");
 }

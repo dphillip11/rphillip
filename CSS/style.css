@@ -147,10 +147,11 @@
  #lightbox-thumbnails {
      position: fixed;
      bottom: 2.5vh;
+     transition: all 0.3s ease-in-out;
+     left: 20vw;
  }
 
  .lightbox-control {
-     position: fixed;
      font-size: 5vh;
      color: var(--color-beige);
      background-color: var(--color-dark-blue);
@@ -160,16 +161,19 @@
  }
 
  #lightbox-close {
+     position: fixed;
      top: 2.5vh;
      right: 2.5vw;
  }
 
  #lightbox-next {
+     position: fixed;
      bottom: 55%;
      right: 2.5vw;
  }
 
  #lightbox-previous {
+     position: fixed;
      bottom: 55%;
      left: 2.5vw;
  }
@@ -179,6 +183,7 @@
      height: 75vh;
      margin: auto;
      padding-bottom: 0.5vh;
+     position: relative;
  }
 
  #animation-iframe {
@@ -186,9 +191,48 @@
      height: 100%;
  }
 
+ #animation-iframe-buffer {
+     width: 100%;
+     height: 100%;
+     position: absolute;
+     top: 0;
+     left: 0;
+     background-color: var(--color-dark-blue);
+     opacity: 0.5;
+     z-index: -1;
+ }
+
+ #animation-previous {
+     position: absolute;
+     top: 50%;
+     left: -3%;
+     transform: translateY(-50%);
+     font-size: 5vh;
+     color: var(--color-beige);
+     background-color: var(--color-dark-blue);
+     cursor: pointer;
+     padding: 0.5vw;
+     border-radius: 0.5vw;
+ }
+
+ #animation-next {
+     position: absolute;
+     top: 50%;
+     right: -3%;
+     transform: translateY(-50%);
+     font-size: 5vh;
+     color: var(--color-beige);
+     background-color: var(--color-dark-blue);
+     cursor: pointer;
+     padding: 0.5vw;
+     border-radius: 0.5vw;
+ }
+
  .thumbnails {
      display: flex;
      flex-direction: row;
+     align-items: center;
+     margin-top: 2vh;
  }
 
  .thumbnail-holder {
@@ -198,6 +242,7 @@
      transition: all 0.5s ease-in-out;
      margin: 0.5vw;
      border-radius: 0.5vw;
+     border: 3px solid rgba(0, 0, 0, 0);
  }
 
  .selected {
