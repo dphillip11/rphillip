@@ -113,6 +113,7 @@ let mouseDownX = 0;
 let mouseDownY = 0;
 let currentOffsetX = 0;
 let currentOffsetY = 0;
+let currentScale = 1;
 
 function galleryItemClickEvent(index) {
     changeSelectedImage(index);
@@ -220,6 +221,7 @@ function changeSelectedImage(index) {
     lightboxThumbnails.style.transform = "translateX(" + offset + "px)";
     currentOffsetX = 0;
     currentOffsetY = 0;
+    currentScale = 1;
     lightboxImage.style.transform = "translateX(" + currentOffsetX + "px) translateY(" + currentOffsetY + "px)";
 }
 
@@ -317,24 +319,49 @@ function lightboxMouseMove(event) {
       deltaY = event.clientY - mouseDownY;
     }
 
-    lightboxImage.style.transform = `translate(${deltaX}px, ${deltaY}px)`;
+    requestAnimationFrame(() => {
+      applyLightboxTransform(deltaX, deltaY);
+    });
   }
 }
 
-function addCustomMouseEventsLightbox() {
-  lightboxImage.addEventListener("mousedown", lightboxMouseDown);
-  lightboxImage.addEventListener("mouseup", lightboxMouseUp);
-  lightboxImage.addEventListener("mousemove", lightboxMouseMove);
-  lightboxImage.addEventListener("mouseleave", lightboxMouseUp);
+function zoom(factor) {
 
-  // Touch events
-  lightboxImage.addEventListener("touchstart", lightboxMouseDown);
-  lightboxImage.addEventListener("touchend", lightboxMouseUp);
-  lightboxImage.addEventListener("touchmove", lightboxMouseMove);
-  lightboxImage.addEventListener("touchcancel", lightboxMouseUp);
+    currentScale *= factor;
+    currentScale = Math.max(currentScale, 0.5);
+    currentScale = Math.min(currentScale, 10);
+}
+
+function applyLightboxTransform() {
+    lightboxImage.style.transform = "translateX(" + currentOffsetX + "px) translateY(" + currentOffsetY + "px) scale(" + currentScale + ")";
 }
 
 
+function lightboxWheel(event) {
+    let delta = event.deltaY;
+    LOG("delta: " + delta);
+    if (delta < 0)
+        zoom(1.1);
+    else
+        zoom(0.9);
+    applyLightboxTransform();
+}
+    
+
+function addCustomMouseEventsLightbox() {
+    let lightboxImage = document.getElementById("lightbox");
+  lightbox.addEventListener("mousedown", lightboxMouseDown);
+  lightbox.addEventListener("mouseup", lightboxMouseUp);
+  lightbox.addEventListener("mousemove", lightboxMouseMove);
+lightbox.addEventListener("mouseleave", lightboxMouseUp);
+lightbox.addEventListener("wheel", lightboxWheel);
+
+  // Touch events
+  lightbox.addEventListener("touchstart", lightboxMouseDown);
+  lightbox.addEventListener("touchend", lightboxMouseUp);
+  lightbox.addEventListener("touchmove", lightboxMouseMove);
+  lightbox.addEventListener("touchcancel", lightboxMouseUp);
+}
 
 function addVideoEventListeners() {
     let previousButton = document.getElementById("animation-previous");
@@ -344,6 +371,48 @@ function addVideoEventListeners() {
 }
 
 
+let isNavbarHidden = false;
+const navbar = document.getElementById('navbar');
+const viewportHeight = window.innerHeight;
+const scrollThreshold = viewportHeight * 0.15; // Customize the threshold as needed
+const mouseThresholdY = viewportHeight * 0.15;
+
+function addNavbarBehaviour() {
+    
+    window.addEventListener('scroll', function () {
+        LOG("scrolling");
+        const scrollPosition = window.scrollY;
+
+        if (scrollPosition > scrollThreshold && !isNavbarHidden) {
+            LOG("hiding navbar");
+            navbar.classList.add('hidden');
+            isNavbarHidden = true;
+        } else if (scrollPosition <= scrollThreshold && isNavbarHidden) {
+            LOG("showing navbar");
+            navbar.classList.remove('hidden');
+            isNavbarHidden = false;
+        }
+    });
+
+    window.addEventListener('mousemove', function (event) {
+        const mouseY = event.clientY;
+
+        if (mouseY < mouseThresholdY && isNavbarHidden) {
+            navbar.classList.remove('hidden');
+            isNavbarHidden = false;
+        }
+    });
+
+    window.addEventListener('touchmove', function (event) {
+        const touchY = event.touches[0].clientY;
+
+        if (touchY < mouseThresholdY && isNavbarHidden) {
+            navbar.classList.remove('hidden');
+            isNavbarHidden = false;
+        }
+    });
+}
+
 function onLoad() {
     //create gallery on load
     createImageGallery();
@@ -352,6 +421,7 @@ function onLoad() {
     addLightboxEventListeners();
     addCustomMouseEventsLightbox();
     addVideoEventListeners();
+    addNavbarBehaviour();
     changeSelectedVideo(0);
     changeSelectedImage(0);
 
