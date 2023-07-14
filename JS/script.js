@@ -111,9 +111,11 @@ let selectedImage = 0;
 let mouseDown = false;
 let mouseDownX = 0;
 let mouseDownY = 0;
-let currentOffsetX = 0;
-let currentOffsetY = 0;
+let translateX = 0;
+let translateY = 0;
 let currentScale = 1;
+let minScale = 0.5;
+let maxScale = 5;
 
 function galleryItemClickEvent(index) {
     changeSelectedImage(index);
@@ -219,10 +221,10 @@ function changeSelectedImage(index) {
     let offset = calculateThumbnailOffset(index);
     LOG("offset: " + offset);
     lightboxThumbnails.style.transform = "translateX(" + offset + "px)";
-    currentOffsetX = 0;
-    currentOffsetY = 0;
+    translateX = 0;
+    translateY = 0;
     currentScale = 1;
-    lightboxImage.style.transform = "translateX(" + currentOffsetX + "px) translateY(" + currentOffsetY + "px)";
+    lightboxImage.style.transform = "translateX(" + translateX + "px) translateY(" + translateY + "px)";
 }
 
 function previousImage() {
@@ -283,68 +285,50 @@ let touchIdentifier = null; // Track the touch identifier for touch events
 
 function lightboxMouseDown(event) {
   event.preventDefault(); // Prevent default touch behavior
-
-  if (event.touches && event.touches.length === 1) {
-    touchIdentifier = event.touches[0].identifier;
-    mouseDownX = event.touches[0].clientX;
-    mouseDownY = event.touches[0].clientY;
-  } else {
-    touchIdentifier = null;
-    mouseDownX = event.clientX;
-    mouseDownY = event.clientY;
-  }
-
   mouseDown = true;
-  mouseDownX -= currentOffsetX;
-  mouseDownY -= currentOffsetY;
+  mouseDownX = event.clientX || event.touches[0].clientX;
+  mouseDownY = event.clientY || event.touches[0].clientY;
 }
 
 function lightboxMouseUp(event) {
   mouseDown = false;
-  currentOffsetX = event.clientX - mouseDownX;
-  currentOffsetY = event.clientY - mouseDownY;
 }
 
 function lightboxMouseMove(event) {
-  if (mouseDown && (event.touches && event.touches.length === 1 && event.touches[0].identifier === touchIdentifier || !event.touches)) {
-    let deltaX = 0;
-    let deltaY = 0;
-
-    if (event.touches && event.touches.length === 1) {
-      const touch = event.touches[0];
-      deltaX = touch.clientX - mouseDownX;
-      deltaY = touch.clientY - mouseDownY;
-    } else {
-      deltaX = event.clientX - mouseDownX;
-      deltaY = event.clientY - mouseDownY;
+    if (!mouseDown) {
+        return;
     }
+  const currentX = event.clientX || event.touches[0].clientX;
+  const currentY = event.clientY || event.touches[0].clientY;
+  const diffX = currentX - mouseDownX;
+  const diffY = currentY - mouseDownY;
 
-    requestAnimationFrame(() => {
-      applyLightboxTransform(deltaX, deltaY);
-    });
-  }
+  translateX += diffX;
+  translateY += diffY;
+  mouseDownX = currentX;
+  mouseDownY = currentY;
+  applyLightboxTransform();
 }
 
-function zoom(factor) {
+function zoom(event) {
+    const scrollDelta = Math.sign(event.deltaY);
+  const zoomStep = 0.1;
 
-    currentScale *= factor;
-    currentScale = Math.max(currentScale, 0.5);
-    currentScale = Math.min(currentScale, 10);
+  if (scrollDelta > 0 && currentScale > minScale) {
+    currentScale -= zoomStep;
+  } else if (scrollDelta < 0 && currentScale < maxScale) {
+    currentScale += zoomStep;
+  }
+  applyLightboxTransform();
 }
 
 function applyLightboxTransform() {
-    lightboxImage.style.transform = "translateX(" + currentOffsetX + "px) translateY(" + currentOffsetY + "px) scale(" + currentScale + ")";
+    lightboxImage.style.transform = "translateX(" + translateX + "px) translateY(" + translateY + "px) scale(" + currentScale + ")";
 }
 
-
 function lightboxWheel(event) {
-    let delta = event.deltaY;
-    LOG("delta: " + delta);
-    if (delta < 0)
-        zoom(1.1);
-    else
-        zoom(0.9);
-    applyLightboxTransform();
+    event.preventDefault();
+    zoom(event);
 }
     
 
