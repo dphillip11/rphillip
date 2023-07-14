@@ -93,10 +93,10 @@
 
  #navbar a {
      padding: 2vw;
-     padding-top: 0.5vw;
+     padding-top: 1vw;
      text-decoration: none;
      font-family: Arial, Helvetica, sans-serif;
-     font-size: 2vw;
+     font-size: 3vh;
      font-weight: normal;
      color: var(--color-beige);
  }

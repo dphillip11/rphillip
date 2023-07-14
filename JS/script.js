@@ -354,18 +354,17 @@ function lightboxWheel(event) {
     
 
 function addCustomMouseEventsLightbox() {
-    let lightboxImage = document.getElementById("lightbox");
-  lightbox.addEventListener("mousedown", lightboxMouseDown);
-  lightbox.addEventListener("mouseup", lightboxMouseUp);
-  lightbox.addEventListener("mousemove", lightboxMouseMove);
-lightbox.addEventListener("mouseleave", lightboxMouseUp);
-lightbox.addEventListener("wheel", lightboxWheel);
+  lightboxImage.addEventListener("mousedown", lightboxMouseDown);
+  lightboxImage.addEventListener("mouseup", lightboxMouseUp);
+  lightboxImage.addEventListener("mousemove", lightboxMouseMove);
+lightboxImage.addEventListener("mouseleave", lightboxMouseUp);
+lightboxImage.addEventListener("wheel", lightboxWheel);
 
   // Touch events
-  lightbox.addEventListener("touchstart", lightboxMouseDown);
-  lightbox.addEventListener("touchend", lightboxMouseUp);
-  lightbox.addEventListener("touchmove", lightboxMouseMove);
-  lightbox.addEventListener("touchcancel", lightboxMouseUp);
+  lightboxImage.addEventListener("touchstart", lightboxMouseDown);
+  lightboxImage.addEventListener("touchend", lightboxMouseUp);
+  lightboxImage.addEventListener("touchmove", lightboxMouseMove);
+  lightboxImage.addEventListener("touchcancel", lightboxMouseUp);
 }
 
 function addVideoEventListeners() {
