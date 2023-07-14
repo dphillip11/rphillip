@@ -204,6 +204,7 @@
      cursor: pointer;
      padding: 0.5vw;
      border-radius: 0.5vw;
+     z-index: 200;
  }
 
  #lightbox-close {
