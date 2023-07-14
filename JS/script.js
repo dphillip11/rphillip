@@ -102,10 +102,17 @@ function getImagePath(index)
 
 let imageGallery = document.getElementById("gallery");
 let lightboxThumbnails = document.getElementById("lightbox-thumbnails");
+let lightboxImage = document.getElementById("lightbox-main-image");
 let videoThumbnails = document.getElementById("video-thumbnails");
 
 let selectedVideo = 0;
 let selectedImage = 0;
+
+let mouseDown = false;
+let mouseDownX = 0;
+let mouseDownY = 0;
+let currentOffsetX = 0;
+let currentOffsetY = 0;
 
 function galleryItemClickEvent(index) {
     changeSelectedImage(index);
@@ -197,7 +204,6 @@ function changeSelectedVideo(index) {
 }
 
 function changeSelectedImage(index) {
-    let lightboxImage = document.getElementById("lightbox-main-image");
     lightboxImage.src = getImagePath(index);
     //update CSS
     let oldSelected = document.getElementById("lightbox-thumbnail-" + selectedImage);
@@ -212,6 +218,9 @@ function changeSelectedImage(index) {
     let offset = calculateThumbnailOffset(index);
     LOG("offset: " + offset);
     lightboxThumbnails.style.transform = "translateX(" + offset + "px)";
+    currentOffsetX = 0;
+    currentOffsetY = 0;
+    lightboxImage.style.transform = "translateX(" + currentOffsetX + "px) translateY(" + currentOffsetY + "px)";
 }
 
 function previousImage() {
@@ -267,55 +276,64 @@ function addLightboxEventListeners() {
     nextButton.addEventListener("click", nextImage);
 }
 
-let mouseDown = false;
-let mouseDownX = 0;
-let mouseDownY = 0;
+
+let touchIdentifier = null; // Track the touch identifier for touch events
 
 function lightboxMouseDown(event) {
-    mouseDown = true;
+  event.preventDefault(); // Prevent default touch behavior
+
+  if (event.touches && event.touches.length === 1) {
+    touchIdentifier = event.touches[0].identifier;
+    mouseDownX = event.touches[0].clientX;
+    mouseDownY = event.touches[0].clientY;
+  } else {
+    touchIdentifier = null;
     mouseDownX = event.clientX;
     mouseDownY = event.clientY;
-    //check for touch event
-    if (event.touches != null) {
-        mouseDownX = event.touches[0].clientX;
-        mouseDownY = event.touches[0].clientY;
-    }
-    LOG("mouse down at: " + mouseDownX + ", " + mouseDownY);
+  }
+
+  mouseDown = true;
+  mouseDownX -= currentOffsetX;
+  mouseDownY -= currentOffsetY;
 }
 
 function lightboxMouseUp(event) {
-    LOG("mouse up");
-    mouseDown = false;
+  mouseDown = false;
+  currentOffsetX = event.clientX - mouseDownX;
+  currentOffsetY = event.clientY - mouseDownY;
 }
 
 function lightboxMouseMove(event) {
-    if (mouseDown) {
-        let deltaX = event.clientX - mouseDownX;
-        let deltaY = event.clientY - mouseDownY;
-        //check for touch event
-        if (event.touches != null) {
-            deltaX = event.touches[0].clientX - mouseDownX;
-            deltaY = event.touches[0].clientY - mouseDownY;
-        }
-        LOG("delta: " + deltaX + ", " + deltaY);
-        let image = document.getElementById("lightbox-main-image");
-        image.style.transform = "translate(" + deltaX + "px, " +  deltaY + "px)";
+  if (mouseDown && (event.touches && event.touches.length === 1 && event.touches[0].identifier === touchIdentifier || !event.touches)) {
+    let deltaX = 0;
+    let deltaY = 0;
+
+    if (event.touches && event.touches.length === 1) {
+      const touch = event.touches[0];
+      deltaX = touch.clientX - mouseDownX;
+      deltaY = touch.clientY - mouseDownY;
+    } else {
+      deltaX = event.clientX - mouseDownX;
+      deltaY = event.clientY - mouseDownY;
     }
+
+    lightboxImage.style.transform = `translate(${deltaX}px, ${deltaY}px)`;
+  }
 }
 
 function addCustomMouseEventsLightbox() {
-    let mainImage = document.getElementById("lightbox-main-image");
-    mainImage.addEventListener("mousedown", lightboxMouseDown);
-    mainImage.addEventListener("mouseup", lightboxMouseUp);
-    mainImage.addEventListener("mousemove", lightboxMouseMove);
-    mainImage.addEventListener("mouseleave", lightboxMouseUp);
-    //touch
-    mainImage.addEventListener("touchstart", lightboxMouseDown);
-    mainImage.addEventListener("touchend", lightboxMouseUp);
-    mainImage.addEventListener("touchmove", lightboxMouseMove);
-    mainImage.addEventListener("touchcancel", lightboxMouseUp);
+  lightboxImage.addEventListener("mousedown", lightboxMouseDown);
+  lightboxImage.addEventListener("mouseup", lightboxMouseUp);
+  lightboxImage.addEventListener("mousemove", lightboxMouseMove);
+  lightboxImage.addEventListener("mouseleave", lightboxMouseUp);
 
+  // Touch events
+  lightboxImage.addEventListener("touchstart", lightboxMouseDown);
+  lightboxImage.addEventListener("touchend", lightboxMouseUp);
+  lightboxImage.addEventListener("touchmove", lightboxMouseMove);
+  lightboxImage.addEventListener("touchcancel", lightboxMouseUp);
 }
+
 
 
 function addVideoEventListeners() {
