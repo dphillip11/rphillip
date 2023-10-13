@@ -21,7 +21,7 @@ timeout /t 3
 git pull
 git add .
 git commit -m "added images"
-git push
+git push -f
 
 :: Display a success message
 echo Script completed successfully.
