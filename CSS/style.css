@@ -316,6 +316,8 @@
  #about {
      color: var(--color-dark-blue);
      background-color: var(--color-beige);
+     padding-left: 20px;
+     padding-right: 20px;
  }
 
  #contact {
