@@ -47,13 +47,12 @@
  }
 
  :root {
-     --color-light-blue: rgb(40, 143, 180);
-     --color-dark-blue: rgb(29, 85, 111);
-     --color-beige: rgb(239, 221, 178);
-     --color-red: rgb(250, 54, 10);
-     --overlay-dark-blue: rgba(29, 85, 111, 0.9);
-
- }
+    --color-light-blue: rgb(15, 84, 133);
+    --color-dark-blue: rgb(8, 16, 28);
+    --color-beige: rgb(255, 254, 241);
+    --color-red: rgb(115, 113, 128);
+    --overlay-dark-blue: rgba(57, 58, 59, 0.9);
+}
 
  body {
      margin: 0;
