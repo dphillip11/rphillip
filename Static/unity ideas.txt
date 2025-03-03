@@ -1,0 +1,3 @@
+CREATE ANIMATIONS
+
+Code for animation to take place on trigger- can lead to other animations and return to original state- followed by other triggers

@@ -1,0 +1,16 @@
+As a rule, don't undersell yourself. You are not inexperienced!
+
+Talk about what you have done not what you will/want to do:
+ eg. BAD: I am willing to learn new skills
+	GOOD: I have a proven track record of learning new skills to accomodate the needs of a project
+	EXTRA: Currently I am engaged in developing a 2D game using Unity where I have learned aspects of design relating to levels, gameplay and narrative
+         and workflows specific to Unity for artwork, animation, sequencing and version control etc.
+
+Emphasise soft skills that are important in a team, management being quite important
+ eg. 
+- management:
+  managing a team of x people
+  working collaboratively on interdisciplinary teams
+  refinement of requirements and project direction through design
+  coordinating tasks of art teams to reach delivery milestone
+  
